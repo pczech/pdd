@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Lets users add private annotations to nodes.
+ *
+ * Adds a text field when a node is displayed
+ * so that authenticated users may make notes.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function annotate_menu() {
+  $items = array();
+
+  $items[''] = array(
+    'title' => '',
+    'description' => '',
+    'page callback' => '',
+    'page arguments' => array(),
+  );
+
+  return $items;
+}
