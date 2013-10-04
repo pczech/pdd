@@ -17,14 +17,30 @@ function annotate_menu() {
   $items['admin/config/annotate'] = array(
     'title' => 'Node annotation',
     'description' => 'Adjust node annotation options.',
+    // 'access arguments' are required to make the menu visible
+    // in admin/config page.
     'access arguments' => array('administer site configuration'),
-
+    'position' => 'right',
+    'weight' => -40,
+    // Used to show annotate settings page via URL admin/confing/annotate,
+    // otherwise admin/config page is shown.
+    'page callback' => 'system_admin_menu_block_page',
+    // system_admin_menu_block_page is outside the scope of annotate module,
+    // (in system.admin.inc), thus the function location shall be set.
+    'file' => 'system.admin.inc',
+    // The file path shall be defined too, as it defaults to the path to
+    // the module implementing the hook: modules/pdd/annotate/system.admin.inc.
+    'file path' => drupal_get_path('module', 'system'),
   );
 
   $items['admin/config/annotate/settings'] = array(
     'title' => 'Annotation settings',
     'description' => 'Change how annotations behave.',
     'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    // drupal_get_form takes as argument $form_id. It can be a function too.
+    'page arguments' => array('annotate_admin_settings'),
+    'file' => 'annotate.admin.inc',
   );
 
   return $items;
