@@ -14,11 +14,17 @@
 function annotate_menu() {
   $items = array();
 
-  $items[''] = array(
-    'title' => '',
-    'description' => '',
-    'page callback' => '',
-    'page arguments' => array(),
+  $items['admin/config/annotate'] = array(
+    'title' => 'Node annotation',
+    'description' => 'Adjust node annotation options.',
+    'access arguments' => array('administer site configuration'),
+
+  );
+
+  $items['admin/config/annotate/settings'] = array(
+    'title' => 'Annotation settings',
+    'description' => 'Change how annotations behave.',
+    'access arguments' => array('administer site configuration'),
   );
 
   return $items;
