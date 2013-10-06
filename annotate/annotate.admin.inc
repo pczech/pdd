@@ -50,4 +50,58 @@ function annotate_admin_settings() {
  * Process annotation settings submission.
  */
 function annotate_admin_settings_submit($form, $form_state) {
+  // Loop through each of the content type checkboxes shown on the form.
+  foreach ($form_state['values']['annotate_node_types'] as $key => $value) {
+    // If the check box for a content type is unchecked, look to see whether
+    // this content type has the annotation field attached to it using the
+    // field_info_instance function. If it does then we need to remove the
+    // annotation field as the administrator has unchecked the box.
+    if (!$value) {
+      $instance = field_info_instance('node', 'annotation', $key);
+      if (!empty($instance)) {
+        field_delete_instance($instance);
+        watchdog("Annotation", 'Deleted annotation field from content type:
+          %key', array('%key' => $key));
+      }
+    }
+    else {
+      // If the check box for a content type is checked, look to see whether
+      // the field is associated with that content type. If not then add the
+      // annotation field to the content type.
+      $instance = field_info_instance('node', 'annotation', $key);
+      if (empty($instance)) {
+        // There is hook_field_create_instance() available, so the local
+        // function to create the annotate field has another name.
+        field_annotate_create_instance($key);
+        watchdog('Annotation', 'Added annotation field to content type: %key',
+          array('%key' => $key));
+      }
+    }
+  }
+}
+
+
+/**
+ * Create annotate field instance.
+ */
+function field_annotate_create_instance($bundle) {
+  $instance = array(
+    'field_name' => 'annotation',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'label' => t('Annotation'),
+    'widget_type' => 'text_textarea_with_summary',
+    'settings' => array(
+      'display_summary' => TRUE,
+    ),
+    'display' => array(
+      'default' => array(
+        'type' => 'text_default',
+      ),
+      'teaser' => array(
+        'type' => 'text_summary_or_trimmed',
+      ),
+    ),
+  );
+  $instance = field_create_instance($instance);
 }
