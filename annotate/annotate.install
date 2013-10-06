@@ -37,4 +37,6 @@ function annotate_uninstall() {
   }
 
   variable_del('annotate_node_types');
+  variable_del('annotate_deletion');
+  variable_get('annotate_limit_per_node');
 }
