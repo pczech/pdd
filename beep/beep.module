@@ -6,24 +6,34 @@
  */
 
 /**
- * Logs a Beep system message.
+ * Implements hook_action_info().
+ */
+function beep_action_info() {
+  $actions['beep_beep_action'] = array(
+    'label' => t('Beep annoyingly'),
+    'type' => 'system',
+    'configurable' => FALSE,
+    'triggers' => array(
+      'node_view',
+      'node_insert',
+      'node_update',
+      'node_delete',
+    ),
+  );
+
+  return $actions;
+}
+
+/**
+ * Action function named by the convention as MODULE_FUNCNAME_action.
+ */
+function beep_beep_action() {
+  beep_beep();
+}
+
+/**
+ * Logs a 'Beep' system message.
  */
 function beep_beep() {
   watchdog('beep', 'Beep!');
-}
-
-/**
- * Implements hook_user_login().
- */
-function beep_user_login(&$edit, $account) {
-  beep_beep();
-}
-
-/**
- * Implements hook_node_insert().
- */
-function beep_node_insert($node) {
-  dpm($node);
-
-  beep_beep();
 }
