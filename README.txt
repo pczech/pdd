@@ -33,8 +33,11 @@ PHP
 ---
 empty
 unset
+is_numeric
+is_int
 
 
 BEEP
 hook_user_login
 hook_node_insert
+hook_action_info
