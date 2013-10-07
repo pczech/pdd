@@ -49,3 +49,10 @@ MODULE_FUNCNAME_action_form
 MODULE_FUNCNAME_action
 MODULE_FUNCNAME_action_validate
 form_set_error
+
+tables:
+field_data_annotate
+field_config_instance
+variable
+node
+actions
