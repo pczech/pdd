@@ -40,11 +40,11 @@ function beep_action_info() {
 
 /**
  * Action function named by the convention as MODULE_FUNCNAME_action.
+ *
+ * Action function takes 2 to 4 parameters. $entity is not NULL
+ * depending on action type and trigger type,
  */
-function beep_beep_action(&$entity, $context = array()) {
-  dpm($entity);
-  dpm($context);
-
+function beep_beep_action(&$entity, $context) {
   beep_beep();
 }
 
@@ -61,7 +61,6 @@ function beep_beep() {
  * Multiple Beep advanced action form definition function.
  */
 function beep_multiple_beep_action_form($context) {
-  dpm($context);
   $form['beeps'] = array(
     '#type' => 'textfield',
     '#title' => t('Number of beeps'),
@@ -84,8 +83,9 @@ function beep_multiple_beep_action_validate($form, $form_state) {
   $beeps = $form_state['values']['beeps'];
 
   /*
+  is_int returns FALSE for integer string like for example '1'.
   if (!is_int($beeps)) {
-    form_set_error('beeps', t('Please enter a whole number between 0 and 10.'));
+  form_set_error('beeps', t('Please enter a whole number between 0 and 10.'));
   }
   */
 
@@ -105,21 +105,33 @@ function beep_multiple_beep_action_validate($form, $form_state) {
 
 /**
  * Multiple Beep advanced action submit function.
+ *
+ * The submit function’s return value is special for action configuration
+ * forms. It should be an array keyed by the fields we are interested in.
+ * The values in this array will be made available to the action when
+ * it runs. The description is handled automatically, so we need only to
+ * return the field we provided, that is, the number of beeps.
  */
 function beep_multiple_beep_action_submit($form, $form_state) {
-  return array('beeps' => (int)$form_state['values']['beeps']);
+  return array('beeps' => (int) $form_state['values']['beeps']);
 }
 
 
 /**
- * Multiple Beep advance action function
+ * Multiple Beep advance action function.
+ *
+ * @param object $entity
+ *   Object that is currently being acted (node, user, taxonomy).
+ *   For example, if an action is set to execute when a new node is
+ *   created, the $entity parameter will contain the node object.
+ *   However $entity is NULL if action type is not consistent with
+ *   triger type (for example if action type is 'system' for node
+ *   tiggers).
+ * @param array $context
+ *   Action function context.
  */
-function beep_multiple_beep_action(&$entity, $context = array()) {
-  dpm($entity);
-  dpm($context);
-
+function beep_multiple_beep_action(&$entity, $context) {
   for ($i = 0; $i < $context['beeps']; $i++) {
-  beep_beep();
-}
-
+    beep_beep();
+  }
 }
