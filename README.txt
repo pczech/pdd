@@ -35,9 +35,17 @@ empty
 unset
 is_numeric
 is_int
+intval
+in_array
 
 
 BEEP
 hook_user_login
 hook_node_insert
 hook_action_info
+hook_action_info_alter
+MODULE_FUNCNAME_action_submit
+MODULE_FUNCNAME_action_form
+MODULE_FUNCNAME_action
+MODULE_FUNCNAME_action_validate
+form_set_error

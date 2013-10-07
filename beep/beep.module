@@ -135,3 +135,24 @@ function beep_multiple_beep_action(&$entity, $context) {
     beep_beep();
   }
 }
+
+
+/**
+ * Implements hook_action_info_alter().
+ */
+function beep_action_info_alter(&$actions) {
+  // The module user (user.module) already provides the action
+  // 'user_block_user_action', however, this action does not show up on
+  // the triggers assignment page, because they do not declare any supported
+  // hooks; the triggers key is just an empty array.
+  // Make the "Block current user" action available to the comment insert
+  // trigger: add (not overwrite!) a hook to the triggers list.
+  if (!in_array('comment_insert', $actions['user_block_user_action']['triggers'])) {
+    $actions['user_block_user_action']['triggers'][] = 'comment_insert';
+  }
+  // Remarks:
+  // - In this example user.module defines the action for 'any' hook
+  // - if 'any' is set, then the code above inserts 'comment_insert' too
+  // - uncomment dpm to see the content of the actions:
+  // dpm($actions);
+}
