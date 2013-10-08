@@ -15,7 +15,8 @@ function menufun_menu() {
     'page callback' => 'menufun_greeting_hello',
     'page arguments' => array('Jane', 'Dow'),
     'file' => 'menufun_greeting.inc',
-    'type' => MENU_CALLBACK,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => -1,
   );
 
   return $items;
