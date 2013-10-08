@@ -23,6 +23,11 @@ function menufun_menu() {
 /**
  * Page callback.
  */
-function menufun_hello() {
-  return t('Hello!');
+function menufun_hello($first_name = '', $last_name = '') {
+  $substitute = array(
+    '@fn' => $first_name,
+    '@ln' => $last_name,
+  );
+
+  return t('Hello @fn @ln', $substitute);
 }
