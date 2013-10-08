@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Use this module to learn about Drupal's menu system.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function menufun_menu() {
+  $items['menufun'] = array(
+    'title' => 'Greeting',
+    'access callback' => TRUE,
+    'page callback' => 'menufun_hello',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Page callback.
+ */
+function menufun_hello() {
+  return t('Hello!');
+}
