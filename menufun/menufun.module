@@ -12,8 +12,9 @@ function menufun_menu() {
   $items['menufun'] = array(
     'title' => 'Greeting',
     'access callback' => TRUE,
-    'page callback' => 'menufun_hello',
+    'page callback' => 'menufun_greeting_hello',
     'page arguments' => array('Jane', 'Dow'),
+    'file' => 'menufun_greeting.inc',
     'type' => MENU_CALLBACK,
   );
 
