@@ -13,6 +13,7 @@ function menufun_menu() {
     'title' => 'Greeting',
     'access callback' => TRUE,
     'page callback' => 'menufun_hello',
+    'page arguments' => array('Jane', 'Dow'),
     'type' => MENU_CALLBACK,
   );
 
@@ -23,11 +24,17 @@ function menufun_menu() {
 /**
  * Page callback.
  */
-function menufun_hello($first_name = '', $last_name = '') {
+function menufun_hello($first_name = '', $last_name = '', $from_first_name = '', $from_last_name = '') {
+  // If a page callback function uses an argument list array, and its path is
+  // requested with optional path arguments, then the list array's arguments
+  // are passed to the callback function first, followed by the optional path
+  // arguments.
   $substitute = array(
     '@fn' => $first_name,
     '@ln' => $last_name,
+    '@ffn' => $from_first_name,
+    '@fln' => $from_last_name,
   );
 
-  return t('Hello @fn @ln', $substitute);
+  return t('Hello @fn @ln from @ffn @fln', $substitute);
 }
