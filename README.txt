@@ -1,20 +1,23 @@
 Hooks
 -----
+hook_action_info
+hook_action_info_alter
 hook_install
 hook_menu
+hook_node_insert
 hook_node_load
+hook_trigger_info
+hook_user_login
 hook_uninstall
 
 Form API
 --------
 drupal_get_form
-FORM_ID_submit
-FORM_ID_validate
+form_set_error
 system_settings_form
 
-variable_set
-variable_get
-variable_del
+FORM_ID_submit
+FORM_ID_validate
 
 Field API
 ---------
@@ -25,9 +28,22 @@ field_delete_instance
 field_info_field
 field_info_instance
 
+actions
+-------
+MODULE_FUNCNAME_action
+MODULE_FUNCNAME_action_form
+MODULE_FUNCNAME_action_submit
+MODULE_FUNCNAME_action_validate
+
+Generic
+-------
 drupal_get_path
 node_type_get_types
+variable_set
+variable_get
+variable_del
 watchdog
+
 
 PHP
 ---
@@ -39,20 +55,11 @@ intval
 in_array
 
 
-BEEP
-hook_user_login
-hook_node_insert
-hook_action_info
-hook_action_info_alter
-MODULE_FUNCNAME_action_submit
-MODULE_FUNCNAME_action_form
-MODULE_FUNCNAME_action
-MODULE_FUNCNAME_action_validate
-form_set_error
-
-tables:
+Database tables
+---------------
+actions
 field_data_annotate
 field_config_instance
-variable
 node
-actions
+variable
+
