@@ -19,6 +19,14 @@ function menufun_menu() {
     'weight' => -1,
   );
 
+  $items['menufun/farewell'] = array(
+    'title' => 'Farewell',
+    'access callback' => TRUE,
+    'page callback' => 'menufun_farewell',
+    'file' => 'menufun_greeting.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
 

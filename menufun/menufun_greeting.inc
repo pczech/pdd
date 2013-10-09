@@ -22,3 +22,10 @@ function menufun_greeting_hello($first_name = '', $last_name = '', $from_first_n
 
   return t('Greeting to @fn @ln from @ffn @fln', $substitute);
 }
+
+/**
+ * Demonstrates nested menus.
+ */
+function menufun_farewell() {
+  return t('Goodbay');
+}
