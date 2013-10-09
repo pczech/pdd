@@ -44,6 +44,14 @@ function menufun_menu() {
     'page arguments' => array(1),
   );
 
+  // Try this: /menufun/param/foo/bar
+  $items['menufun/param/%menufun_param'] = array(
+    'title' => 'Parameters',
+    'access callback' => TRUE,
+    'page callback' => 'menufun_param',
+    'page arguments' => array(2),
+  );
+
   return $items;
 }
 
@@ -75,6 +83,20 @@ function menufun_title() {
   drupal_set_title(t('The page title'));
   $now = format_date(time());
   return t('It is now @time', array('@time' => $now));
+}
+
+/**
+ * Param page callback.
+ */
+function menufun_param($param1 = '', $param2 = '') {
+  return t("params: @p1, @p2", array('@p1' => $param1, '@p2' => $param2));
+}
+
+/**
+ * Wildcard autoloader function.
+ */
+function menufun_param_load($wildcard) {
+  return 'replace_' . $wildcard;
 }
 
 /**
