@@ -31,6 +31,19 @@ function menufun_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  // A wildcard at the end of the menu path does not interfere with the
+  // passing of additional parts of the URL to the page callback, because
+  // the wildcard matches only up to the next slash.
+  // Experiment with various paths, for example:
+  // menufun/john/dow/james/den -> Greeting...
+  // menufun/john/hi/dow/james/den ->  Hello...
+  $items['menufun/%/hi'] = array(
+    'title' => 'Hi',
+    'access callback' => TRUE,
+    'page callback' => 'menufun_hello',
+    'page arguments' => array(1),
+  );
+
   return $items;
 }
 
