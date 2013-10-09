@@ -11,6 +11,8 @@
 function menufun_menu() {
   $items['menufun'] = array(
     'title' => 'Greeting',
+    'title callback' => 'menufun_title',
+    'description' => 'A salutation',
     // 'access callback' => TRUE,
     'access arguments' => array('receive greeting'),
     'page callback' => 'menufun_greeting_hello',
@@ -49,6 +51,17 @@ function menufun_hello($first_name = '', $last_name = '', $from_first_name = '',
   );
 
   return t('Hello @fn @ln from @ffn @fln', $substitute);
+}
+
+/**
+ * Title callback.
+ */
+function menufun_title() {
+  // The title is shown as menu item title and a title of the page.
+  // To decouple the titles drupal_set_title is used.
+  drupal_set_title(t('The page title'));
+  $now = format_date(time());
+  return t('It is now @time', array('@time' => $now));
 }
 
 /**

@@ -69,3 +69,4 @@ menu_router
 menu_links
 
 hook_permission
+drupal_set_title
