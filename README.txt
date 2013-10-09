@@ -68,3 +68,4 @@ SQL:
 menu_router
 menu_links
 
+hook_permission

@@ -11,7 +11,8 @@
 function menufun_menu() {
   $items['menufun'] = array(
     'title' => 'Greeting',
-    'access callback' => TRUE,
+    // 'access callback' => TRUE,
+    'access arguments' => array('receive greeting'),
     'page callback' => 'menufun_greeting_hello',
     'page arguments' => array('Jane', 'Dow'),
     'file' => 'menufun_greeting.inc',
@@ -21,7 +22,8 @@ function menufun_menu() {
 
   $items['menufun/farewell'] = array(
     'title' => 'Farewell',
-    'access callback' => TRUE,
+    // 'access callback' => TRUE,
+    'access arguments' => array('receive greeting'),
     'page callback' => 'menufun_farewell',
     'file' => 'menufun_greeting.inc',
     'type' => MENU_NORMAL_ITEM,
@@ -47,4 +49,16 @@ function menufun_hello($first_name = '', $last_name = '', $from_first_name = '',
   );
 
   return t('Hello @fn @ln from @ffn @fln', $substitute);
+}
+
+/**
+ * Implements hook_permission().
+ */
+function menufun_permission() {
+  $permissions['receive greeting'] = array(
+    'title' => t('Receive a greeting'),
+    'description' => t('Allow users receive a greeting message'),
+  );
+
+  return $permissions;
 }
