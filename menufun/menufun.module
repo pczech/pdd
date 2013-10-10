@@ -45,11 +45,12 @@ function menufun_menu() {
   );
 
   // Try this: /menufun/param/foo/bar
-  $items['menufun/param/%menufun_param'] = array(
+  $items['menufun/param/%menufun_param/%'] = array(
     'title' => 'Parameters',
     'access callback' => TRUE,
     'page callback' => 'menufun_param',
     'page arguments' => array(2),
+    'load arguments' => array(3),
   );
 
   return $items;
@@ -95,8 +96,9 @@ function menufun_param($param1 = '', $param2 = '') {
 /**
  * Wildcard autoloader function.
  */
-function menufun_param_load($wildcard) {
-  return 'replace_' . $wildcard;
+function menufun_param_load($wildcard, $param = '') {
+  dpm($param);
+  return 'replace_' . $wildcard . ', replace_' . $param;
 }
 
 /**
