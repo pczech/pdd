@@ -70,3 +70,8 @@ menu_links
 
 hook_permission
 drupal_set_title
+hook_menu_alter
+session_destroy
+module_invoke_all
+drupal_anonymous_user?
+drupal_goto
