@@ -53,6 +53,14 @@ function menufun_menu() {
     'load arguments' => array(3),
   );
 
+  $items['menufun/uid/%menufun_uid'] = array(
+    'title' => 'User Id',
+    'access callback' => TRUE,
+    'page callback' => 'menufun_uid',
+    'page arguments' => array(2),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
 
@@ -97,9 +105,43 @@ function menufun_param($param1 = '', $param2 = '') {
  * Wildcard autoloader function.
  */
 function menufun_param_load($wildcard, $param = '') {
-  dpm($param);
+  //dpm($param);
   return 'replace_' . $wildcard . ', replace_' . $param;
 }
+
+/**
+ * Uid page callback
+ */
+function menufun_uid($uid) {
+  return t("Uid: @uid", array('@uid' => $uid));
+}
+
+/**
+ * Demonstrates _to_arg() function.
+ */
+function menufun_uid_to_arg($uid) {
+  dpm($uid);
+  if ($uid == '%') {
+    global $user;
+    return $user->uid;
+  }
+
+  return $uid;
+}
+
+/**
+ * Demonstrates _load() function for uid
+ */
+/*
+function menufun_uid_load($uid) {
+  if ($uid == '%') {
+    global $user;
+    return $user->uid;
+  }
+
+  return $uid;
+}
+*/
 
 /**
  * Implements hook_permission().
