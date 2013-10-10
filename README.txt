@@ -75,3 +75,4 @@ session_destroy
 module_invoke_all
 drupal_anonymous_user
 drupal_goto
+hook_menu_link_alter

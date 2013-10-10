@@ -161,7 +161,7 @@ function menufun_permission() {
  * Implements hook_menu_alter().
  */
 function menufun_menu_alter(&$items) {
-  dpm($items['user/logout']);
+  // dpm($items['user/logout']);
 
   // Replace the page callback to 'user_logout' with a call to
   // our own page callback.
@@ -172,7 +172,7 @@ function menufun_menu_alter(&$items) {
   // is in our module and that's already in scope.
   unset($items['user/logout']['file']);
 
-  dpm($items['user/logout']);
+  // dpm($items['user/logout']);
 }
 
 
@@ -210,4 +210,15 @@ function menufun_user_logout_cb() {
   // $user = drupal_anonymous_user();
 
   drupal_goto('http://drupal.org/');
+}
+
+/**
+ * Implements hook_menu_link_alter().
+ */
+function menufun_menu_link_alter(&$item) {
+  if ($item['link_path'] == 'user/logout') {
+    dpm($item);
+    $item['link_title'] = 'Sign off';
+    dpm($item);
+  }
 }
