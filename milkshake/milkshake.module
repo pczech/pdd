@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Use this module to learn about Drupal's menu system,
+ * specifically how local tasks work.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function milkshake_menu() {
+  $items['milkshake'] = array(
+    'title' => 'Milkshake flavors',
+    'access callback' => TRUE,
+    'page callback' => 'milkshake_overview',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Milkshake page callback
+ */
+function milkshake_overview() {
+  return t('Hello');
+
+}

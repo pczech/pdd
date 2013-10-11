@@ -4,8 +4,11 @@ hook_action_info
 hook_action_info_alter
 hook_install
 hook_menu
+hook_menu_alter
+hook_menu_link_alter
 hook_node_insert
 hook_node_load
+hook_permission
 hook_trigger_info
 hook_user_login
 hook_uninstall
@@ -37,7 +40,11 @@ MODULE_FUNCNAME_action_validate
 
 Generic
 -------
+drupal_anonymous_user
 drupal_get_path
+drupal_goto
+drupal_set_title
+module_invoke_all
 node_type_get_types
 variable_set
 variable_get
@@ -53,6 +60,7 @@ is_numeric
 is_int
 intval
 in_array
+session_destroy
 
 
 Database tables
@@ -60,19 +68,7 @@ Database tables
 actions
 field_data_annotate
 field_config_instance
-node
-variable
-
-MENU
-SQL:
 menu_router
 menu_links
-
-hook_permission
-drupal_set_title
-hook_menu_alter
-session_destroy
-module_invoke_all
-drupal_anonymous_user
-drupal_goto
-hook_menu_link_alter
+node
+variable

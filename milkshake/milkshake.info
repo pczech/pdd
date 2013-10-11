@@ -1,0 +1,4 @@
+name = Milkshake
+description = Demonstrates menu local tasks.
+package = Pro Drupal Development
+core = 7.x
