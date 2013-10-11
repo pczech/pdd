@@ -8,12 +8,12 @@
 /**
  * Implements hook_menu().
  */
-function database_menu() {
+function dbasebox_menu() {
   $items = array();
 
-  $items['database'] = array(
+  $items['dbasebox'] = array(
     'title' => 'Database sanbox',
-    'page callback' => 'database_sandbox',
+    'page callback' => 'dbasebox_sandbox',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
   );
@@ -24,6 +24,8 @@ function database_menu() {
 /**
  * Database page callback.
  */
-function database_sandbox() {
+function dbasebox_sandbox() {
+
   return t('Hello!');
 }
+
