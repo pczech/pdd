@@ -120,7 +120,7 @@ function menufun_uid($uid) {
  * Demonstrates _to_arg() function.
  */
 function menufun_uid_to_arg($uid) {
-  dpm($uid);
+  // dpm($uid);
   if ($uid == '%') {
     global $user;
     return $user->uid;
@@ -217,8 +217,8 @@ function menufun_user_logout_cb() {
  */
 function menufun_menu_link_alter(&$item) {
   if ($item['link_path'] == 'user/logout') {
-    dpm($item);
+    // dpm($item);
     $item['link_title'] = 'Sign off';
-    dpm($item);
+    // dpm($item);
   }
 }
