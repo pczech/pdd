@@ -17,13 +17,37 @@ function milkshake_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  $items['milkshake/list'] = array(
+    'title' => 'List flavors',
+    'access callback' => TRUE,
+    'page callback' => 'milkshake_list',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['milkshake/add'] = array(
+    'title' => 'Add flavors',
+    'access callback' => TRUE,
+    'page callback' => 'milkshake_add',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
 
 /**
- * Milkshake page callback
+ * Milkshake main page callback.
  */
 function milkshake_overview() {
-  return t('Hello');
+  $output = t('The following flavors are available...');
 
+  return $output;
+}
+
+/**
+ * Milkshake list page callback.
+ */
+function milkshake_list() {
+  $output = t('Milkshake list');
+
+  return $output;
 }
