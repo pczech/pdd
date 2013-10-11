@@ -21,14 +21,31 @@ function milkshake_menu() {
     'title' => 'List flavors',
     'access callback' => TRUE,
     'page callback' => 'milkshake_list',
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -1,
   );
 
   $items['milkshake/add'] = array(
     'title' => 'Add flavors',
     'access callback' => TRUE,
     'page callback' => 'milkshake_add',
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['milkshake/list/fruity'] = array(
+    'title' => 'Fruity flavors',
+    'access callback' => TRUE,
+    'page callback' => 'milkshake_list',
+    'page arguments' => array(2),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['milkshake/list/candy'] = array(
+    'title' => 'Candy flavors',
+    'access callback' => TRUE,
+    'page callback' => 'milkshake_list',
+    'page arguments' => array(2),
+    'type' => MENU_LOCAL_TASK,
   );
 
   return $items;
@@ -46,8 +63,17 @@ function milkshake_overview() {
 /**
  * Milkshake list page callback.
  */
-function milkshake_list() {
-  $output = t('Milkshake list');
+function milkshake_list($type = '') {
+  $output = t('List @type flavors', array('@type' => $type));
+
+  return $output;
+}
+
+/**
+ * Milkshake add page callback.
+ */
+function milkshake_add() {
+  $output = t('A handy form to add flavors might go here...');
 
   return $output;
 }
