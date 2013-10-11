@@ -12,7 +12,7 @@ function dbasebox_menu() {
   $items = array();
 
   $items['dbasebox'] = array(
-    'title' => 'Database sanbox',
+    'title' => 'Database Box',
     'page callback' => 'dbasebox_sandbox',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
@@ -26,6 +26,15 @@ function dbasebox_menu() {
  */
 function dbasebox_sandbox() {
 
-  return t('Hello!');
+  $db_result = db_query("SELECT nid, title FROM {node} WHERE type = :type",
+    array(':type' => 'page',));
+
+  dpm($db_result);
+
+  foreach($db_result as $row) {
+    dpm($row);
+  }
+
+  return t('db_query done');
 }
 
