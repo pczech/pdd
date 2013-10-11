@@ -1,0 +1,4 @@
+name = Database
+description = Demonstrates database interface
+package = Pro Drupal Development
+core = 7.x

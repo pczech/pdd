@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Use this module to learn Drupal's database interface.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function database_menu() {
+  $items = array();
+
+  $items['database'] = array(
+    'title' => 'Database sanbox',
+    'page callback' => 'database_sandbox',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Database page callback.
+ */
+function database_sandbox() {
+  return t('Hello!');
+}
