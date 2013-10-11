@@ -77,3 +77,14 @@ function milkshake_add() {
 
   return $output;
 }
+
+/**
+ * Implements hook_menu_link_alter().
+ */
+function milkshake_menu_link_alter(&$item) {
+  if ($item['link_path'] == 'node/add') {
+    $item['hidden'] = 1;
+    // Call dpm if you want to see available parameters which can be altered.
+    // dpm($item);
+  }
+}
