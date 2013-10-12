@@ -49,7 +49,7 @@ function dbasebox_install() {
     'tons' => 12,
   ))
   ->execute();
-  dpm($bid);
+  //dpm($bid);
 
   // Simple insert: degenerate form
   // INSERT INTO {dbasebox} (name, ton) VALUSE ('Alex' 4)
@@ -58,5 +58,12 @@ function dbasebox_install() {
   ->values(array('Alex', '4'))
   ->execute();
 
-  dpm($bid);
+  // Multi insert form.
+  $bid = db_insert('dbasebox')
+    ->fields(array('name', 'tons'))
+    ->values(array('Melman', 6))
+    ->values(array('Vitaly', 3))
+    ->values(array('Kowalsky', 7))
+    ->execute();
+
 }

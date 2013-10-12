@@ -77,4 +77,7 @@ variable
 dbasebox
 --------
 db_query
-
+db_insert
+db_update
+db_delete
+hook_schema
