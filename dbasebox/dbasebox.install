@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file
+ * Install routines for dbasebox module
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function dbasebox_schema() {
+  $schema['dbasebox'] = array(
+    'description' => 'Stores information about giant rabbits.',
+    'fields' => array(
+      'bid' => array(
+        'description' => 'Primary key: A unique ID for each bunny.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'Each bunny gets a name.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'tons' => array(
+        'description' => 'The weight of the bunny to the nearest ton.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('bid'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function dbasebox_install() {
+  // Simple insert: compact form
+  // INSERT INTO {dbasebox} (name, ton) VALUSE ('Bugs' 12)
+  $bid = db_insert('dbasebox')
+  ->fields(array(
+    'name' => 'Bugs',
+    'tons' => 12,
+  ))
+  ->execute();
+  dpm($bid);
+
+  // Simple insert: degenerate form
+  // INSERT INTO {dbasebox} (name, ton) VALUSE ('Alex' 4)
+  $bid = db_insert('dbasebox')
+  ->fields(array('name', 'tons'))
+  ->values(array('Alex', '4'))
+  ->execute();
+
+  dpm($bid);
+}
