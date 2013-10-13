@@ -39,6 +39,20 @@ function dbasebox_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  $items['dbasebox/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'dbasebox_delete',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['dbasebox/sfield'] = array(
+    'title' => 'Single field',
+    'page callback' => 'dbasebox_sfield',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
 
@@ -132,6 +146,30 @@ function dbasebox_update() {
   $output .= dbasebox_print();
 
   return $output;
+}
+
+/**
+ * Database delete page callback.
+ */
+function dbasebox_delete() {
+  $deleted_num = db_delete('dbasebox')
+    ->condition('tons', 0)
+    ->execute();
+
+  $output = "Deleted $deleted_num entries.<br/><br/>";
+
+  $output .= dbasebox_print();
+
+  return $output;
+}
+
+/**
+ * Database single value page callback.
+ */
+function dbasebox_sfield() {
+  $sfield = db_query("SELECT * FROM {dbasebox}")->fetchField(1);
+
+  return $sfield;
 }
 
 /**
