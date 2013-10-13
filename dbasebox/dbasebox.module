@@ -19,10 +19,19 @@ function dbasebox_menu() {
   );
 
   $items['dbasebox/query'] = array(
-    'title' => 'Query',
+    'title' => 'Static query',
     'page callback' => 'dbasebox_query',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
+    'weight' => 0,
+  );
+
+  $items['dbasebox/select'] = array(
+    'title' => 'Dynamic query',
+    'page callback' => 'dbasebox_select',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 1,
   );
 
   $items['dbasebox/insert'] = array(
@@ -30,6 +39,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_insert',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
+    'weight' => 2,
   );
 
   $items['dbasebox/update'] = array(
@@ -37,6 +47,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_update',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
+    'weight' => 3,
   );
 
   $items['dbasebox/delete'] = array(
@@ -44,6 +55,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_delete',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
+    'weight' => 4,
   );
 
   $items['dbasebox/sfield'] = array(
@@ -51,6 +63,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_sfield',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
+    'weight' => 5,
   );
 
   return $items;
@@ -105,6 +118,60 @@ function dbasebox_query() {
   $bunny = array('bid' => 2);
   $result = db_query('SELECT * FROM {dbasebox} WHERE bid = :bid',
     array(':bid' => $bunny['bid']));
+
+  foreach ($result as $row) {
+    $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';
+  }
+
+  return $output;
+}
+
+/**
+ * Dynamic query page callback
+ */
+function dbasebox_select() {
+  $output = '';
+
+  // Simple query.
+  $output .= 'SELECT nid, title FROM {node}:<br/>';
+  $result = db_select('node', 'n')
+    ->fields('n', array('nid', 'title'))
+    ->execute();
+
+  foreach ($result as $row) {
+    $output .= $row->nid . ": " . $row->title . '<br/>';
+  }
+
+  // Simple query with placeholder.
+  $output .= '<br/>SELECT name FROM {role} WHERE rid = 2:<br/>';
+  $result = db_select('role', 'r')
+  ->fields('r', array('name'))
+  ->condition('rid', 2)
+  ->execute();
+
+  foreach ($result as $row) {
+    $output .= $row->name . '<br/>';
+  }
+
+  // Simple query with placeholders.
+  $output .= '<br/>SELECT name FROM {role} WHERE rid > 0 AND rid < 3:<br/>';
+  $result = db_select('role', 'r')
+    ->fields('r', array('name'))
+    ->condition('rid', 0, '>')
+    ->condition('rid', 3, '<')
+    ->execute();
+
+  foreach ($result as $row) {
+    $output .= $row->name . '<br/>';
+  }
+
+  // Simple query with variable placeholder.
+  $output .= '<br/>SELECT * FROM {dbasebox} WHERE bid = 2:<br/>';
+  $bunny = array('bid' => 2);
+  $result = db_select('dbasebox', 'd')
+    ->fields('d')
+    ->condition('bid', 2)
+    ->execute();
 
   foreach ($result as $row) {
     $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';

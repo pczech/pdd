@@ -95,3 +95,8 @@ DeleteQuery::execute
 
 hook_schema
 
+db_select
+SelectQuery::fields
+SelectQuery::condition
+SelectQuery::execute
+
