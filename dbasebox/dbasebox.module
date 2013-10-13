@@ -34,7 +34,7 @@ function dbasebox_menu() {
     'weight' => 1,
   );
 
-  $items['dbasebox/pager'] = array(
+  $items['dbasebox/select/pager'] = array(
     'title' => 'Pager',
     'page callback' => 'dbasebox_pager',
     'access callback' => TRUE,
@@ -72,6 +72,14 @@ function dbasebox_menu() {
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
     'weight' => 6,
+  );
+
+  $items['dbasebox/write'] = array(
+    'title' => 'Write record',
+    'page callback' => 'dbasebox_write',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 7,
   );
 
   return $items;
@@ -265,6 +273,7 @@ function dbasebox_update() {
   return $output;
 }
 
+
 /**
  * Database delete page callback.
  */
@@ -280,6 +289,7 @@ function dbasebox_delete() {
   return $output;
 }
 
+
 /**
  * Database single value page callback.
  */
@@ -287,6 +297,36 @@ function dbasebox_sfield() {
   $sfield = db_query("SELECT * FROM {dbasebox}")->fetchField(1);
 
   return $sfield;
+}
+
+
+/**
+ * Database write record page callback.
+ */
+function dbasebox_write() {
+  $record = new stdClass();
+  $record->name = 'Skipper';
+  $record->tons = 17;
+
+  drupal_write_record('dbasebox', $record);
+  dpm($record);
+
+  $record = new stdClass();
+  $record->bid = 1;
+  $record->name = 'Roger';
+  drupal_write_record('dbasebox', $record, 'bid');
+  dpm($record);
+
+  $result = db_select('dbasebox', 'd')
+    ->fields('d')
+    ->execute();
+
+  $output = '';
+  foreach ($result as $row) {
+    $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';
+  }
+
+  return $output;
 }
 
 /**

@@ -101,6 +101,10 @@ SelectQuery::condition
 SelectQuery::execute
 SelectQuery::range
 SelectQuery::extend
+SelectQuery::orderBy
+SelectQuery::distinct
 
 SelectQueryExtender::orderBy
 SelectQueryExtender::limit
+
+drupal_write_record
