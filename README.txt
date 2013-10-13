@@ -99,4 +99,4 @@ db_select
 SelectQuery::fields
 SelectQuery::condition
 SelectQuery::execute
-
+SelectQuery::range

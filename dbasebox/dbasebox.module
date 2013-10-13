@@ -127,7 +127,7 @@ function dbasebox_query() {
 }
 
 /**
- * Dynamic query page callback
+ * Dynamic query page callback.
  */
 function dbasebox_select() {
   $output = '';
@@ -136,6 +136,7 @@ function dbasebox_select() {
   $output .= 'SELECT nid, title FROM {node}:<br/>';
   $result = db_select('node', 'n')
     ->fields('n', array('nid', 'title'))
+    ->range(2, 2)
     ->execute();
 
   foreach ($result as $row) {
