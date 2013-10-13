@@ -100,3 +100,7 @@ SelectQuery::fields
 SelectQuery::condition
 SelectQuery::execute
 SelectQuery::range
+SelectQuery::extend
+
+SelectQueryExtender::orderBy
+SelectQueryExtender::limit

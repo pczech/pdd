@@ -34,12 +34,20 @@ function dbasebox_menu() {
     'weight' => 1,
   );
 
+  $items['dbasebox/pager'] = array(
+    'title' => 'Pager',
+    'page callback' => 'dbasebox_pager',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2,
+  );
+
   $items['dbasebox/insert'] = array(
     'title' => 'Insert',
     'page callback' => 'dbasebox_insert',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 2,
+    'weight' => 3,
   );
 
   $items['dbasebox/update'] = array(
@@ -47,7 +55,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_update',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 3,
+    'weight' => 4,
   );
 
   $items['dbasebox/delete'] = array(
@@ -55,7 +63,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_delete',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 4,
+    'weight' => 5,
   );
 
   $items['dbasebox/sfield'] = array(
@@ -63,7 +71,7 @@ function dbasebox_menu() {
     'page callback' => 'dbasebox_sfield',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 5,
+    'weight' => 6,
   );
 
   return $items;
@@ -177,6 +185,47 @@ function dbasebox_select() {
   foreach ($result as $row) {
     $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';
   }
+
+  return $output;
+}
+
+/**
+ * Database pager query page callback.
+ */
+function dbasebox_pager() {
+  $query = db_select('node', 'n');
+  $query
+    ->fields('n', array('title'))
+    ->extend('PagerDefault')
+    ->limit(2)
+    ->orderBy('title');
+
+  // Warning. extend() returns PagerDefault object, but it is not stored
+  // in any variable, so the variable $query below is still SelectQuery
+  // object. Check dpm($query) here.
+  dpm($query);
+  $result = $query->execute();
+
+  // This is correct.
+  $query = db_select('node', 'n')->extend('PagerDefault');
+  $query
+    ->fields('n', array('title'))
+    ->limit(2)
+    ->orderBy('title');
+
+  dpm($query);
+  $result = $query->execute();
+
+  $output = '';
+  foreach ($result as $row) {
+    $output .= $row->title . '<br/>';
+  }
+  $output .= theme('pager');
+
+  /*
+  $test = theme('pager');
+  dpm($test);
+  */
 
   return $output;
 }
