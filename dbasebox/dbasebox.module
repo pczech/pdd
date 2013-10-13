@@ -18,13 +18,42 @@ function dbasebox_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  $items['dbasebox/query'] = array(
+    'title' => 'Query',
+    'page callback' => 'dbasebox_query',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['dbasebox/insert'] = array(
+    'title' => 'Insert',
+    'page callback' => 'dbasebox_insert',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['dbasebox/update'] = array(
+    'title' => 'Update',
+    'page callback' => 'dbasebox_update',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
 
 /**
- * Database page callback.
+ * Database main page callback.
  */
 function dbasebox_sandbox() {
+  return t('Select database action from DbaseBox menu');
+}
+
+
+/**
+ * Database query page callback.
+ */
+function dbasebox_query() {
 
   $output = '';
 
@@ -67,6 +96,53 @@ function dbasebox_sandbox() {
     $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';
   }
 
-  // return t('@output', array('@output' => $output));
+  return $output;
+}
+
+
+/**
+ * Database insert page callback.
+ */
+function dbasebox_insert() {
+  // Multi insert form.
+  $bid = db_insert('dbasebox')
+  ->fields(array('name', 'tons'))
+  ->values(array('Melman', 6))
+  ->values(array('Vitaly', 3))
+  ->values(array('Kowalsky', 7))
+  ->execute();
+
+  return dbasebox_print();
+}
+
+
+/**
+ * Database update page callback.
+ */
+function dbasebox_update() {
+  $updated_num = db_update('dbasebox')
+  ->fields(array(
+    'tons' => 0,
+  ))
+  ->condition('bid', 3, '>=')
+  ->execute();
+
+  $output = "Updated $updated_num entries.<br/><br/>";
+
+  $output .= dbasebox_print();
+
+  return $output;
+}
+
+/**
+ * Prints dbasebox database content.
+ */
+function dbasebox_print() {
+  $output = 'SELECT * FROM {dbasebox}:<br/>';
+  $result = db_query('SELECT * FROM {dbasebox}');
+  foreach ($result as $row) {
+    $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';
+  }
+
   return $output;
 }

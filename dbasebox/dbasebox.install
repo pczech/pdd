@@ -57,13 +57,4 @@ function dbasebox_install() {
   ->fields(array('name', 'tons'))
   ->values(array('Alex', '4'))
   ->execute();
-
-  // Multi insert form.
-  $bid = db_insert('dbasebox')
-    ->fields(array('name', 'tons'))
-    ->values(array('Melman', 6))
-    ->values(array('Vitaly', 3))
-    ->values(array('Kowalsky', 7))
-    ->execute();
-
 }
