@@ -58,3 +58,13 @@ function dbasebox_install() {
   ->values(array('Alex', '4'))
   ->execute();
 }
+
+/**
+ * Implements hook_update_N().
+ */
+function dbasebox_update_7100(&$sandbox = NULL) {
+
+  db_rename_table('dbasebox', 'dbasebox_rabbits');
+
+  return t('DbaseBox module updated successfully'');
+}
