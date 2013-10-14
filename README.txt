@@ -9,6 +9,10 @@ hook_menu_link_alter
 hook_node_insert
 hook_node_load
 hook_permission
+hook_query_alter
+hook_query_TAG_alter
+hook_schema
+hook_schema_alter
 hook_trigger_info
 hook_user_login
 hook_uninstall
@@ -44,6 +48,7 @@ drupal_anonymous_user
 drupal_get_path
 drupal_goto
 drupal_set_title
+drupal_write_record
 module_invoke_all
 node_type_get_types
 variable_set
@@ -74,8 +79,8 @@ node
 variable
 
 
-dbasebox
---------
+database API
+------------
 db_query
 DatabaseStatementBase::fetchField
 
@@ -93,8 +98,6 @@ db_delete
 DeleteQuery::condition
 DeleteQuery::execute
 
-hook_schema
-
 db_select
 SelectQuery::fields
 SelectQuery::condition
@@ -107,7 +110,9 @@ SelectQuery::distinct
 SelectQueryExtender::orderBy
 SelectQueryExtender::limit
 
-drupal_write_record
 db_rename_table
-hook_schema_alter
 db_add_field
+db_drop_field
+db_drop_index
+db_query_temporary
+db_set_active

@@ -152,7 +152,9 @@ function dbasebox_select() {
   $output .= 'SELECT nid, title FROM {node}:<br/>';
   $result = db_select('node', 'n')
     ->fields('n', array('nid', 'title'))
-    ->range(2, 2)
+    // Range will be added by hook_query_alter. Clear cache.
+    // ->range(2, 2)
+    ->addTag('micro_list')
     ->execute();
 
   foreach ($result as $row) {
@@ -195,6 +197,17 @@ function dbasebox_select() {
   }
 
   return $output;
+}
+
+
+/**
+ * Implements hook_query_alter().
+ */
+function dbasebox_query_alter(QueryAlterableInterface $query) {
+  if ($query->hasTag('micro_list')) {
+    dpm($query);
+    $query->range(0,2);
+  }
 }
 
 /**
