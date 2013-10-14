@@ -57,4 +57,30 @@ function dbasebox_install() {
   ->fields(array('name', 'tons'))
   ->values(array('Alex', '4'))
   ->execute();
+
+
+  // Add a new field to node table
+  /*
+  $field = array(
+    'description' => 'Whether the node has been marked by dbasebox module.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+    'initial' => 0,
+  );
+
+  $keys['indexes'] = array(
+    'marked' => array('marked'),
+  );
+
+  db_add_field('node', 'marked', $field, $keys);
+  */
+}
+
+/**
+ * Implements hook_schema_alter().
+ */
+function dbasebox_schema_alter(&$schema) {
+  dpm($schema);
 }

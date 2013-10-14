@@ -108,3 +108,6 @@ SelectQueryExtender::orderBy
 SelectQueryExtender::limit
 
 drupal_write_record
+db_rename_table
+hook_schema_alter
+db_add_field
