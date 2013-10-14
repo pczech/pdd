@@ -130,9 +130,9 @@ function dbasebox_query() {
   }
 
   // Simple query with variable placeholder.
-  $output .= '<br/>SELECT * FROM {dbasebox} WHERE bid = 2:<br/>';
+  $output .= '<br/>SELECT * FROM {dbasebox_rabbits} WHERE bid = 2:<br/>';
   $bunny = array('bid' => 2);
-  $result = db_query('SELECT * FROM {dbasebox} WHERE bid = :bid',
+  $result = db_query('SELECT * FROM {dbasebox_rabbits} WHERE bid = :bid',
     array(':bid' => $bunny['bid']));
 
   foreach ($result as $row) {
@@ -183,9 +183,9 @@ function dbasebox_select() {
   }
 
   // Simple query with variable placeholder.
-  $output .= '<br/>SELECT * FROM {dbasebox} WHERE bid = 2:<br/>';
+  $output .= '<br/>SELECT * FROM {dbasebox_rabbits} WHERE bid = 2:<br/>';
   $bunny = array('bid' => 2);
-  $result = db_select('dbasebox', 'd')
+  $result = db_select('dbasebox_rabbits', 'd')
     ->fields('d')
     ->condition('bid', 2)
     ->execute();
@@ -244,7 +244,7 @@ function dbasebox_pager() {
  */
 function dbasebox_insert() {
   // Multi insert form.
-  $bid = db_insert('dbasebox')
+  $bid = db_insert('dbasebox_rabbits')
   ->fields(array('name', 'tons'))
   ->values(array('Melman', 6))
   ->values(array('Vitaly', 3))
@@ -259,7 +259,7 @@ function dbasebox_insert() {
  * Database update page callback.
  */
 function dbasebox_update() {
-  $updated_num = db_update('dbasebox')
+  $updated_num = db_update('dbasebox_rabbits')
   ->fields(array(
     'tons' => 0,
   ))
@@ -278,7 +278,7 @@ function dbasebox_update() {
  * Database delete page callback.
  */
 function dbasebox_delete() {
-  $deleted_num = db_delete('dbasebox')
+  $deleted_num = db_delete('dbasebox_rabbits')
     ->condition('tons', 0)
     ->execute();
 
@@ -294,7 +294,7 @@ function dbasebox_delete() {
  * Database single value page callback.
  */
 function dbasebox_sfield() {
-  $sfield = db_query("SELECT * FROM {dbasebox}")->fetchField(1);
+  $sfield = db_query("SELECT * FROM {dbasebox_rabbits}")->fetchField(1);
 
   return $sfield;
 }
@@ -308,16 +308,16 @@ function dbasebox_write() {
   $record->name = 'Skipper';
   $record->tons = 17;
 
-  drupal_write_record('dbasebox', $record);
+  drupal_write_record('dbasebox_rabbits', $record);
   dpm($record);
 
   $record = new stdClass();
   $record->bid = 1;
   $record->name = 'Roger';
-  drupal_write_record('dbasebox', $record, 'bid');
+  drupal_write_record('dbasebox_rabbits', $record, 'bid');
   dpm($record);
 
-  $result = db_select('dbasebox', 'd')
+  $result = db_select('dbasebox_rabbits', 'd')
     ->fields('d')
     ->execute();
 
@@ -333,8 +333,8 @@ function dbasebox_write() {
  * Prints dbasebox database content.
  */
 function dbasebox_print() {
-  $output = 'SELECT * FROM {dbasebox}:<br/>';
-  $result = db_query('SELECT * FROM {dbasebox}');
+  $output = 'SELECT * FROM {dbasebox_rabbits}:<br/>';
+  $result = db_query('SELECT * FROM {dbasebox_rabbits}');
   foreach ($result as $row) {
     $output .= $row->bid . ': ' . $row->name . ' - ' . $row->tons . '<br/>';
   }

@@ -9,7 +9,7 @@
  * Implements hook_schema().
  */
 function dbasebox_schema() {
-  $schema['dbasebox'] = array(
+  $schema['dbasebox_rabbits'] = array(
     'description' => 'Stores information about giant rabbits.',
     'fields' => array(
       'bid' => array(
@@ -43,7 +43,7 @@ function dbasebox_schema() {
 function dbasebox_install() {
   // Simple insert: compact form
   // INSERT INTO {dbasebox} (name, ton) VALUSE ('Bugs' 12)
-  $bid = db_insert('dbasebox')
+  $bid = db_insert('dbasebox_rabbits')
   ->fields(array(
     'name' => 'Bugs',
     'tons' => 12,
@@ -53,7 +53,7 @@ function dbasebox_install() {
 
   // Simple insert: degenerate form
   // INSERT INTO {dbasebox} (name, ton) VALUSE ('Alex' 4)
-  $bid = db_insert('dbasebox')
+  $bid = db_insert('dbasebox_rabbits')
   ->fields(array('name', 'tons'))
   ->values(array('Alex', '4'))
   ->execute();
