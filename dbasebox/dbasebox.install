@@ -60,14 +60,13 @@ function dbasebox_install() {
 
 
   // Add a new field to node table
-  /*
   $field = array(
     'description' => 'Whether the node has been marked by dbasebox module.',
     'type' => 'int',
     'unsigned' => TRUE,
     'not null' => TRUE,
     'default' => 0,
-    'initial' => 0,
+    'initial' => 1,
   );
 
   $keys['indexes'] = array(
@@ -75,7 +74,6 @@ function dbasebox_install() {
   );
 
   db_add_field('node', 'marked', $field, $keys);
-  */
 }
 
 /**
@@ -83,4 +81,22 @@ function dbasebox_install() {
  */
 function dbasebox_schema_alter(&$schema) {
   dpm($schema);
+  //update dabase schema to include the new field 'marked'
+  $schema['node']['fields']['marked'] = array(
+    'description' => 'Whether the node has been marked by dbasebox module.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  dpm($schema);
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function dbasebox_uninstall() {
+  db_drop_index('node', 'marked');
+  db_drop_field('node', 'marked');
 }
