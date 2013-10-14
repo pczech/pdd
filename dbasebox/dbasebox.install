@@ -66,5 +66,5 @@ function dbasebox_update_7100(&$sandbox = NULL) {
 
   db_rename_table('dbasebox', 'dbasebox_rabbits');
 
-  return t('DbaseBox module updated successfully'');
+  return t('DbaseBox module updated successfully');
 }
