@@ -1,0 +1,4 @@
+name = Users
+description = Demonstrates user related topics.
+package = Pro Drupal Development
+core = 7.x

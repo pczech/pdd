@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Demonstrates users related topics.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function users_menu() {
+  $items['users'] = array(
+    'title' => 'Users',
+    'access callback' => TRUE,
+    'page callback' => 'users_sandbox',
+  );
+
+  return $items;
+}
+
+/**
+ * Handles user examples.
+ */
+function users_sandbox() {
+  global $user;
+
+  dpm($user);
+
+  $output = user_is_logged_in() ? 'User is logged in.' : 'User is an anonymous user.';
+
+  return t('@o', array('@o' => $output));
+}
