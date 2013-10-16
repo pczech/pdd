@@ -30,3 +30,33 @@ function users_sandbox() {
 
   return t('@o', array('@o' => $output));
 }
+
+
+/**
+ * Implements hook_user_view().
+ */
+function users_user_view($account, $view_mode, $langcode) {
+  dpm($account);
+  unset($account->content['summary']);
+
+  $account->content['details'] = array(
+    '#type' => 'user_profile_category',
+    '#title' => t('Details'),
+    //'#attributes' => array('class' => array('user-member')),
+    '#weight' => 0,
+    );
+
+  $account->content['details']['member'] = array(
+    '#type' => 'user_profile_item',
+    '#title' => t('Member'),
+    '#markup' => t('This user is the member of this portal.'),
+  );
+
+  $account->content['details']['data'] = array(
+    '#type' => 'user_profile_item',
+    '#title' => t('Personal data'),
+    '#markup' => t('Personal data of the user.'),
+  );
+
+  dpm($account);
+}
