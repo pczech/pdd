@@ -122,3 +122,4 @@ db_set_active
 users
 
 user_is_logged_in
+hook_user_view
