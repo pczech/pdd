@@ -36,7 +36,7 @@ function users_sandbox() {
  * Implements hook_user_view().
  */
 function users_user_view($account, $view_mode, $langcode) {
-  dpm($account);
+  // dpm($account);
   unset($account->content['summary']);
 
   $account->content['details'] = array(
@@ -58,5 +58,5 @@ function users_user_view($account, $view_mode, $langcode) {
     '#markup' => t('Personal data of the user.'),
   );
 
-  dpm($account);
+  // dpm($account);
 }

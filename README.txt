@@ -123,3 +123,6 @@ users
 
 user_is_logged_in
 hook_user_view
+
+//loginhistory
+hook_user_login
