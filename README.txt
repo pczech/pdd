@@ -77,6 +77,8 @@ menu_router
 menu_links
 node
 variable
+users
+authmap
 
 
 database API
@@ -123,3 +125,12 @@ users
 
 user_is_logged_in
 hook_user_view
+
+
+///////
+daveauth
+
+drupal_substr
+drupal_strtolower
+user_external_login_register
+hook_user_insert
