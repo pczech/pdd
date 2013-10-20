@@ -86,6 +86,7 @@ field_config_instance
 menu_router
 menu_links
 node
+node_type
 variable
 users
 authmap
@@ -129,3 +130,12 @@ db_drop_index
 db_query_temporary
 db_set_active
 
+
+//////////////
+job_post
+
+
+node_types_rebuild
+node_type_delete
+hook_node_info
+node_add_body_field
