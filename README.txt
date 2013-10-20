@@ -3,6 +3,7 @@ Hooks
 hook_action_info
 hook_action_info_alter
 hook_install
+hook_form_alter
 hook_menu
 hook_menu_alter
 hook_menu_link_alter
@@ -14,7 +15,9 @@ hook_query_TAG_alter
 hook_schema
 hook_schema_alter
 hook_trigger_info
+hook_user_insert
 hook_user_login
+hook_user_view
 hook_uninstall
 
 Form API
@@ -35,6 +38,11 @@ field_delete_instance
 field_info_field
 field_info_instance
 
+User API
+--------
+user_external_login_register
+user_is_logged_in
+
 actions
 -------
 MODULE_FUNCNAME_action
@@ -48,6 +56,8 @@ drupal_anonymous_user
 drupal_get_path
 drupal_goto
 drupal_set_title
+drupal_strtolower
+drupal_substr
 drupal_write_record
 module_invoke_all
 node_type_get_types
@@ -119,25 +129,3 @@ db_drop_index
 db_query_temporary
 db_set_active
 
-
-/////
-users
-
-user_is_logged_in
-hook_user_view
-
-
-hook_form_alter
-
-//loginhistory
-hook_user_login
-
-
-
-///////
-daveauth
-
-drupal_substr
-drupal_strtolower
-user_external_login_register
-hook_user_insert
