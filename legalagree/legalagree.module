@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Support for dubious legal agreement during user registration.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function legalagree_form_alter(&$form, &$form_state, $form_id) {
+  // dpm($form);
+  // dpm($form_state);
+  // dpm($form_id);
+
+  if ($form_id != 'user_register_form') {
+    return;
+  }
+
+  $form['#validate'][] = 'legalagree_user_form_validate';
+
+  $form['account']['legal_agreement'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Legal agreement'),
+    'decission' => array(
+      '#type' => 'radios',
+      '#options' => array(t('I disagree'), t('I agree')),
+      '#default_value' => 0,
+      '#description' => t('By registering at %site-name, you agree that
+        at any time, we (or our surly, brutish henchmen) may enter your place of
+        residence and smash your belongings with a ball-peen hammer.',
+        array('%site-name' => variable_get('site_name', 'drupal'))),
+    ),
+  );
+}
+
+/**
+ * Validate user legal agreement form.
+ *
+ * User has to accept the Legal Agreement.
+ */
+function legalagree_user_form_validate($form, &$form_state) {
+  // dpm($form);
+  // dpm($form_state);
+
+  global $user;
+
+  if ($form_state['input']['decission'] <> 1) {
+    form_set_error('decision', t('You must agree to the Legal Agreement before
+      registration can be completed.'));
+  }
+  else {
+    // This is called also if other form fields are NOK, and it is called
+    // for current user for exampple, admin if he adds a new user.
+    watchdog('user', 'User @user agreed to legal terms',
+      array('@user' => $user->name));
+  }
+}

@@ -123,3 +123,6 @@ users
 
 user_is_logged_in
 hook_user_view
+
+
+hook_form_alter
