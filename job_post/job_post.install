@@ -19,19 +19,105 @@ function job_post_install() {
   // Add fields to 'job post' bundle.
   node_add_body_field($types['job_post']);
 
+  // According to the Field API spec, 'type' is property of field, not
+  // the property of field instance, so thie piece of code from the book
+  // seems to be incorrect.
+  /*
   // Load the instance definition for our content type's body, configure
   // the body field and save the changes back to the body field instance.
   $body_instance = field_info_instance('node', 'body', 'job_post');
+  $body_instance['type'] = 'text_summary_or_trimmed';
+  field_update_instance($body_instance);
+  */
 
-  dpm($body_instance);
+  // Create all the fields we are adding to our content type.
+  foreach (_job_post_installed_fields() as $field_id => $field_def) {
+    // Check to see if job post module's fields exist.
+    $check_field = field_info_field($field_id);
+    if (empty($check_field)) {
+      field_create_field($field_def);
+    }
+  }
 
-  //$body_instance['type'] = 'text_summary_or_trimmed';
-  //field_update_instance($body_instance);
+  // Create all the instances for our fields.
+  foreach (_job_post_installed_instances() as $instance) {
+    field_create_instance($instance);
+  }
 }
+
+/**
+ * Returns a structured array defining the fields created by this content type.
+ *
+ * For the job post module there is only one additional field – the company
+ * name. Other fields could be added by defining them in this function as
+ * additional elements in the array below.
+ */
+function _job_post_installed_fields() {
+  /*
+   * Use t() if your code will never run during the Drupal installation phase.
+   * Use st() if your code will only run during installation and never any
+   * other time. Use get_t() if your code could run in either circumstance.
+   */
+  $t = get_t();
+  return array(
+    'job_post_company' => array(
+      'field_name' => 'job_post_company',
+      'type' => 'text',
+      'label' => $t('Company posting the job listing'),
+    ),
+  );
+}
+
+
+/**
+ * Returns field instances associated with this content type.
+ */
+function _job_post_installed_instances() {
+  $t = get_t();
+  return array(
+    'job_post_company' => array(
+      'field_name' => 'job_post_company',
+      'entity_type' => 'node',
+      'bundle' => 'job_post',
+      'type' => 'text',
+      'label' => $t('Company posting the job listing'),
+      'widget' => array(
+        'type' => 'text_textfield',
+      ),
+      'display' => array(
+        'example_node_list' => array(
+          'label' => $t('Company posting the job listing'),
+          'type' => 'text',
+        ),
+      ),
+    ),
+  );
+}
+
 
 /**
  * Implements hook_uninstall().
  */
 function job_post_uninstall() {
+
+  // Loop over any remaining field instances attached to the job_post
+  // content type (such as the body field) and delete them individually.
+  check it
+  $instances = field_info_instances('node', 'job_post');
+  foreach ($instances as $instance_name => $instance) {
+    field_delete_instance($instance);
+  }
+
+  /*
+  // Loop over each of the fields defined by this module and delete
+  // all instances of the field, their data, and the field itself.
+  foreach (array_keys(_job_post_installed_fields()) as $field) {
+    //The function deletes also instances of the field
+    field_delete_field($field);
+  }
+  */
+
+  // It is not required to delete field instances and fields as
+  // node_type_delete deletes field instances and the field itself
   node_type_delete('job_post');
 }
