@@ -23,3 +23,25 @@ function job_post_node_info() {
 
   return $node_type;
 }
+
+
+/**
+ * Implements hook_menu_alter().
+ *
+ * This seems to be stupid. The hook is called when menu is built, so
+ * it would make sense if user with no 'administer nodes' permission
+ * invoked menu rebuilding, but then also root wouldn't see the
+ * menu item.
+ */
+function job_post_menu_alter(&$items) {
+  // dpm($items['node/add/job-post']);
+  if (!user_access('administer nodes')) {
+    // If the user does not have 'administer nodes' permission,
+    // disable the job_post menu item by setting its access callback to FALSE.
+    $items['node/add/job-post']['access callback'] = FALSE;
+    // Must unset access arguments or Drupal will use user_access()
+    // as a default access callback.
+    unset($items['node/add/job-post']['access arguments']);
+  }
+  // dpm($items);
+}
