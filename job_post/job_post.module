@@ -45,3 +45,38 @@ function job_post_menu_alter(&$items) {
   }
   // dpm($items);
 }
+
+/**
+ * Implements hook_permission().
+ *
+ * The standard node access permissions are already created by Drupal
+ * and these are processed during node access cases.
+ */
+function job_post_permission() {
+  $permissions = array(
+    'pdd create job post' => array(
+      'title' => t('PDD Create a job post'),
+      'description' => t('PDD Create a job post'),
+    ),
+    'pdd edit own job post' => array(
+      'title' => t('PDD Edit own job post'),
+      'description' => t('PDD Edit your own job posting'),
+    ),
+    'pdd edit any job post' => array(
+      'title' => t('PDD Edit any job post'),
+      'description' => t('PDD Edit any job posting'),
+    ),
+    'pdd delete own job post' => array(
+      'title' => t('PDD Delete own job post'),
+      'description' => t('PDD Delete own job posting'),
+    ),
+    'pdd delete any job post' => array(
+      'title' => t('PDD Delete any job post'),
+      'description' => t('PDD Delete any job posting'),
+    ),
+  );
+
+  //dpm($permissions);
+
+  return $permissions;
+}
