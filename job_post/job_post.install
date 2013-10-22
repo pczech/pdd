@@ -99,14 +99,14 @@ function _job_post_installed_instances() {
  * Implements hook_uninstall().
  */
 function job_post_uninstall() {
-
+  /*
   // Loop over any remaining field instances attached to the job_post
   // content type (such as the body field) and delete them individually.
-  check it
   $instances = field_info_instances('node', 'job_post');
-  foreach ($instances as $instance_name => $instance) {
+  foreach ($instances as $instance) {
     field_delete_instance($instance);
   }
+  */
 
   /*
   // Loop over each of the fields defined by this module and delete
@@ -118,6 +118,9 @@ function job_post_uninstall() {
   */
 
   // It is not required to delete field instances and fields as
-  // node_type_delete deletes field instances and the field itself
+  // node_type_delete deletes field instances and the field itself.
   node_type_delete('job_post');
+
+  // Purge all field infromation.
+  field_purge_batch(1000);
 }

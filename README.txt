@@ -145,3 +145,5 @@ hook_node_info
 node_add_body_field
 field_update_instance
 get_t
+field_info_instances
+field_purge_batch
