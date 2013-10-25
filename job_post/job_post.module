@@ -95,7 +95,7 @@ function job_post_node_access($node, $op, $account) {
     return;
   }
 
-  switch($op) {
+  switch ($op) {
     case 'view':
       break;
 
@@ -135,12 +135,10 @@ function job_post_node_access($node, $op, $account) {
  * If node is of type 'job_post and the node object exists, check also
  * if given $account is author of the node, otherwise $is_author is not
  * set.
- *
- * @return boolean
  */
 function _job_post_node_check($node, $account, &$is_author) {
   if (is_string($node) AND $node == 'job_post') {
-      return TRUE;
+    return TRUE;
   }
 
   if (is_object($node) AND $node->type == 'job_post') {
@@ -150,4 +148,23 @@ function _job_post_node_check($node, $account, &$is_author) {
 
   // Not node type 'job_post'.
   return FALSE;
+}
+
+
+/**
+ * Implements hook_form().
+ *
+ * It is needed to show title field in the Job Post form. Formally it is
+ * used to define any node type specific fields.
+ *
+ * The spec says that " It is impossible to define a content type without
+ * implementing hook_form()". The contant type can be defined using
+ * .install files like in this example, however there are opinions that it
+ * is bad practise.
+ */
+function job_post_form($node, &$form_state) {
+  // dpm($node);
+  // dpm($form_state);
+
+  return node_content_form($node, $form_state);
 }
