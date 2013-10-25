@@ -76,7 +76,78 @@ function job_post_permission() {
     ),
   );
 
-  //dpm($permissions);
+  // dpm($permissions);
 
   return $permissions;
+}
+
+
+/**
+ * Implements hook_node_access().
+ */
+function job_post_node_access($node, $op, $account) {
+  // dpm($node);
+  // dpm($op);
+  // dpm($account);
+
+  // Check access only to own node type 'job_post'.
+  if (_job_post_node_check($node, $account, $is_author) == FALSE) {
+    return;
+  }
+
+  switch($op) {
+    case 'view':
+      break;
+
+    case 'update':
+      // Allow if user's role has 'edit own job' permission and user is
+      // the author; or if the user's role has 'edit any job' permission.
+      if (user_access('pdd edit own job post', $account) && $is_author ||
+        user_access('pdd edit any job post', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+
+    case 'create':
+      // Warning. The hook is called for node 'job_post' if user has access
+      // to create page or article. Why?!
+      // Allow if user's role has 'create job' permission.
+      if (user_access('pdd create job post', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+
+    case 'delete':
+      // Allow if user's role has 'delete own job' permission and user is
+      // the author; or if the user's role has 'delete any job' permission.
+      if (user_access('pdd delete own job post', $account) && $is_author ||
+        user_access('pdd delete any job post', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+  }
+}
+
+
+/**
+ * Check if node is of type 'job_post' and the node author.
+ *
+ * If node is of type 'job_post and the node object exists, check also
+ * if given $account is author of the node, otherwise $is_author is not
+ * set.
+ *
+ * @return boolean
+ */
+function _job_post_node_check($node, $account, &$is_author) {
+  if (is_string($node) AND $node == 'job_post') {
+      return TRUE;
+  }
+
+  if (is_object($node) AND $node->type == 'job_post') {
+    $is_author = $node->uid == $account->uid;
+    return TRUE;
+  }
+
+  // Not node type 'job_post'.
+  return FALSE;
 }

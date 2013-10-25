@@ -148,3 +148,4 @@ get_t
 field_info_instances
 field_purge_batch
 user_access
+hook_node_access
