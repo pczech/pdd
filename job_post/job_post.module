@@ -184,3 +184,18 @@ function job_post_validate($node, &$form) {
         characters.'));
   }
 }
+
+
+/**
+ * Implements hook_insert().
+ */
+function job_post_insert($node) {
+  $variables = array();
+  $link = l(t('view'), 'node/' . $node->nid);
+
+  // log details of the job posting to watchdog
+  watchdog('job post', 'A new job post titled: ' . $node->title .
+    ' for company: ' . $node->job_post_company['und'][0]['value'] .
+    ' was added by UID: ' . $node->uid, $variables,
+    WATCHDOG_NOTICE, $link);
+}

@@ -154,3 +154,5 @@ node_content_form
 hook_validate
 strlen
 isset
+hook_insert
+
