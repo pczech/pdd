@@ -190,12 +190,51 @@ function job_post_validate($node, &$form) {
  * Implements hook_insert().
  */
 function job_post_insert($node) {
+  _job_post_watchdog($node, 'insert');
+}
+
+/**
+ * Implements hook_update().
+ */
+function job_post_update($node) {
+  _job_post_watchdog($node, 'update');
+}
+
+/**
+ * Implements hook_delete().
+ */
+function job_post_delete($node) {
+  _job_post_watchdog($node, 'delete');
+}
+
+/**
+ * Generates watchdog message for insert, update, delete operations.
+ */
+function _job_post_watchdog($node, $operation) {
+  switch ($operation) {
+    case 'insert':
+      $text = 'added';
+      break;
+
+    case 'update':
+      $text = 'updated';
+      break;
+
+    case 'delete':
+      $text = 'deleted';
+      break;
+
+    default:
+      $text = 'accessed';
+      break;
+  }
+
   $variables = array();
   $link = l(t('view'), 'node/' . $node->nid);
 
-  // log details of the job posting to watchdog
-  watchdog('job post', 'A new job post titled: ' . $node->title .
-    ' for company: ' . $node->job_post_company['und'][0]['value'] .
-    ' was added by UID: ' . $node->uid, $variables,
+  // Log details of the job posting to watchdog.
+  watchdog('job post', 'A new job post titled "' . $node->title .
+    '" for company "' . $node->job_post_company['und'][0]['value'] .
+    '" was ' . $text . ' by UID ' . $node->uid, $variables,
     WATCHDOG_NOTICE, $link);
 }

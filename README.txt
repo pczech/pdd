@@ -155,4 +155,5 @@ hook_validate
 strlen
 isset
 hook_insert
-
+hook_update
+hook_delete
