@@ -112,7 +112,7 @@ function job_post_uninstall() {
   // Loop over each of the fields defined by this module and delete
   // all instances of the field, their data, and the field itself.
   foreach (array_keys(_job_post_installed_fields()) as $field) {
-    //The function deletes also instances of the field
+    // The function deletes also instances of the field
     field_delete_field($field);
   }
   */

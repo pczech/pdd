@@ -151,4 +151,6 @@ user_access
 hook_node_access
 hook_form
 node_content_form
-
+hook_validate
+strlen
+isset

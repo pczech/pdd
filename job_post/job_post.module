@@ -168,3 +168,19 @@ function job_post_form($node, &$form_state) {
 
   return node_content_form($node, $form_state);
 }
+
+/**
+ * Implements hook_validate().
+ */
+function job_post_validate($node, &$form) {
+  // dpm($node);
+  // dpm($form);
+
+  // Enforce a minimum character count of 2 on company names.
+  if (isset($node->job_post_company) &&
+    strlen($node->job_post_company['und'][0]['value']) < 2) {
+    form_set_error('job_post_company',
+      t('The company name is too short. It must be atleast 2
+        characters.'));
+  }
+}
