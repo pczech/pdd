@@ -1,0 +1,292 @@
+<?php
+
+/**
+ * @file
+ * This module provides a node type called job post.
+ */
+
+
+/**
+ * Implements hook_node_info().
+ */
+function job_post_node_info() {
+  $node_type = array(
+    'job_post' => array(
+      'name' => t('Job Post'),
+      'base' => 'job_post',
+      'description' => t('Use this content type to post a job.'),
+      'has_title' => TRUE,
+      'title_label' => t('Job Title'),
+      'help' => t('Enter the job title,
+        job description, and the name of the company that posted the job.'),
+    ),
+  );
+
+  return $node_type;
+}
+
+
+/**
+ * Implements hook_menu_alter().
+ *
+ * This seems to be stupid. The hook is called when menu is built, so
+ * it would make sense if user with no 'administer nodes' permission
+ * invoked menu rebuilding, but then also root wouldn't see the
+ * menu item.
+ */
+function job_post_menu_alter(&$items) {
+  // dpm($items['node/add/job-post']);
+  if (!user_access('administer nodes')) {
+    // If the user does not have 'administer nodes' permission,
+    // disable the job_post menu item by setting its access callback to FALSE.
+    $items['node/add/job-post']['access callback'] = FALSE;
+    // Must unset access arguments or Drupal will use user_access()
+    // as a default access callback.
+    unset($items['node/add/job-post']['access arguments']);
+  }
+  // dpm($items);
+}
+
+
+/**
+ * Implements hook_permission().
+ *
+ * The standard node access permissions are already created by Drupal
+ * and these are processed during node access cases.
+ */
+function job_post_permission() {
+  $permissions = array(
+    'pdd create job post' => array(
+      'title' => t('PDD Create a job post'),
+      'description' => t('PDD Create a job post'),
+    ),
+    'pdd edit own job post' => array(
+      'title' => t('PDD Edit own job post'),
+      'description' => t('PDD Edit your own job posting'),
+    ),
+    'pdd edit any job post' => array(
+      'title' => t('PDD Edit any job post'),
+      'description' => t('PDD Edit any job posting'),
+    ),
+    'pdd delete own job post' => array(
+      'title' => t('PDD Delete own job post'),
+      'description' => t('PDD Delete own job posting'),
+    ),
+    'pdd delete any job post' => array(
+      'title' => t('PDD Delete any job post'),
+      'description' => t('PDD Delete any job posting'),
+    ),
+  );
+
+  // dpm($permissions);
+
+  return $permissions;
+}
+
+
+/**
+ * Implements hook_node_access().
+ */
+function job_post_node_access($node, $op, $account) {
+  // dpm($node);
+  // dpm($op);
+  // dpm($account);
+
+  // Check access only to own node type 'job_post'.
+  if (_job_post_node_check($node, $account, $is_author) == FALSE) {
+    return;
+  }
+
+  switch ($op) {
+    case 'view':
+      break;
+
+    case 'update':
+      // Allow if user's role has 'edit own job' permission and user is
+      // the author; or if the user's role has 'edit any job' permission.
+      if (user_access('pdd edit own job post', $account) && $is_author ||
+        user_access('pdd edit any job post', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+
+    case 'create':
+      // Warning. The hook is called for node 'job_post' if user has access
+      // to create page or article. Why?!
+      // Allow if user's role has 'create job' permission.
+      if (user_access('pdd create job post', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+
+    case 'delete':
+      // Allow if user's role has 'delete own job' permission and user is
+      // the author; or if the user's role has 'delete any job' permission.
+      if (user_access('pdd delete own job post', $account) && $is_author ||
+        user_access('pdd delete any job post', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+  }
+}
+
+
+/**
+ * Check if node is of type 'job_post' and the node author.
+ *
+ * If node is of type 'job_post and the node object exists, check also
+ * if given $account is author of the node, otherwise $is_author is not
+ * set.
+ */
+function _job_post_node_check($node, $account, &$is_author) {
+  if (is_string($node) AND $node == 'job_post') {
+    return TRUE;
+  }
+
+  if (is_object($node) AND $node->type == 'job_post') {
+    $is_author = $node->uid == $account->uid;
+    return TRUE;
+  }
+
+  // Not node type 'job_post'.
+  return FALSE;
+}
+
+
+/**
+ * Implements hook_form().
+ *
+ * It is needed to show title field in the Job Post form. Formally it is
+ * used to define any node type specific fields.
+ *
+ * The spec says that " It is impossible to define a content type without
+ * implementing hook_form()". The contant type can be defined using
+ * .install files like in this example, however there are opinions that it
+ * is bad practise.
+ */
+function job_post_form($node, &$form_state) {
+  // dpm($node);
+  // dpm($form_state);
+
+  return node_content_form($node, $form_state);
+}
+
+
+/**
+ * Implements hook_validate().
+ */
+function job_post_validate($node, &$form) {
+  // dpm($node);
+  // dpm($form);
+
+  // Enforce a minimum character count of 2 on company names.
+  if (isset($node->job_post_company) &&
+    strlen($node->job_post_company['und'][0]['value']) < 2) {
+    form_set_error('job_post_company',
+      t('The company name is too short. It must be atleast 2
+        characters.'));
+  }
+}
+
+
+/**
+ * Implements hook_insert().
+ */
+function job_post_insert($node) {
+  _job_post_watchdog($node, 'insert');
+}
+
+
+/**
+ * Implements hook_update().
+ */
+function job_post_update($node) {
+  _job_post_watchdog($node, 'update');
+}
+
+
+/**
+ * Implements hook_delete().
+ */
+function job_post_delete($node) {
+  _job_post_watchdog($node, 'delete');
+}
+
+
+/**
+ * Generates watchdog message for insert, update, delete operations.
+ */
+function _job_post_watchdog($node, $operation) {
+  switch ($operation) {
+    case 'insert':
+      $text = 'added';
+      break;
+
+    case 'update':
+      $text = 'updated';
+      break;
+
+    case 'delete':
+      $text = 'deleted';
+      break;
+
+    default:
+      $text = 'accessed';
+      break;
+  }
+
+  $variables = array();
+  $link = l(t('view'), 'node/' . $node->nid);
+
+  // Log details of the job posting to watchdog.
+  watchdog('job post', 'A new job post titled "' . $node->title .
+    '" for company "' . $node->job_post_company['und'][0]['value'] .
+    '" was ' . $text . ' by UID ' . $node->uid, $variables,
+    WATCHDOG_NOTICE, $link);
+}
+
+
+/**
+ * Implements hook_load().
+ */
+function job_post_load($nodes) {
+  // Add a new element to the node at load time for storing the
+  // job posting sponsor information.
+  // dpm($nodes);
+  foreach ($nodes as $node) {
+    $node->sponsor = "ACME Career Services, Your Source for Drupal Jobs";
+  }
+}
+
+/**
+ * Implements hook_view().
+ */
+function job_post_view($node, $view_mode) {
+  // dpm($node);
+  // dpm($view_mode);
+
+  if ($view_mode == 'full') {
+    $node->content['sponsor'] = array(
+      '#markup' => theme('sponsor', array(
+        'sponsor' => $node->sponsor,
+        'sponsor_id' => $node->nid,
+        )),
+      '#weight' => 100,
+    );
+  }
+  // dpm($node);
+
+  return $node;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function job_post_theme($existing, $type, $theme, $path) {
+  return array(
+    'sponsor' => array(
+      'variables' => array('sponsor' => NULL, 'sponsor_id' => NULL),
+      'template' => 'sponsor',
+    ),
+  );
+}
