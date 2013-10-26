@@ -151,9 +151,18 @@ user_access
 hook_node_access
 hook_form
 node_content_form
-hook_validate
+t
+l
 strlen
 isset
+
+Node API
+hook_validate
 hook_insert
 hook_update
 hook_delete
+hook_update
+hook_load
+hook_view
+hook_theme
+theme
