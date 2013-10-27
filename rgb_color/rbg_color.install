@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install file for RGB Color module.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function rgb_color_field_schema($field) {
+  dpm($field);
+
+  return array(
+    'columns' => array(
+      'rgb' => array(
+        'type' => 'varchar',
+        'length' => 7,
+        'not null' => FALSE,
+      ),
+    ),
+    'indexes' => array(
+      'rgb' => array('rgb'),
+    ),
+  );
+}

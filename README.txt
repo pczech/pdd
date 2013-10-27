@@ -147,7 +147,11 @@ db_update
 
 
 
+color_example
+/////////////
 
+hook_field_info
+hook_field_schema
 
 
 

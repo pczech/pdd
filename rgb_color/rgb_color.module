@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * An example field using the Field API.
+ */
+
+/**
+ * Implements hook_field_info().
+ *
+ * The hook is called on a module install or cache cleanup. The new field is
+ * visible in content type -> manage fields page if hook_field_widget_info()
+ * defines any widget for the new field type. At this moment the field is not
+ * added to database (field_schema is not called yet).
+ */
+function rgb_color_field_info() {
+  // dpm(field_info_widget_types());
+  // dpm(field_info_formatter_types());
+  return array(
+    'rgb_color' => array(
+      'label' => t('RGB Color'),
+      'description' => t('Demonstrates a field composed of an RGB color.'),
+      'default_widget' => 'rgb_color_3text',
+      'default_formatter' => 'rgb_color_simple_text',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function rgb_color_field_widget_info() {
+  return array(
+    'rgb_color_text' => array(
+      'label' => t('RGB value as #FFFFFF'),
+      'field types' => array('rgb_color'),
+    ),
+  );
+}
