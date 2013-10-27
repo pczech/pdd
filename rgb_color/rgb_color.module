@@ -26,6 +26,65 @@ function rgb_color_field_info() {
   );
 }
 
+/*
+ The RBG Color field has been added to Article and Page Content Type. Here's
+the content of column dat in field_config_instance table. hook_field_schema()
+is not called yet.
+Article:
+a:7:{
+  s:5:"label";s:5:"Color";
+  s:6:"widget";a:5:{
+    s:6:"weight";i:0;
+    s:4:"type";s:15:"rgb_color_3text";
+    s:6:"module";s:9:"rgb_color";
+    s:6:"active";i:0;
+    s:8:"settings";a:0:{}
+  }
+  s:8:"settings";a:1:{
+    s:18:"user_register_form";b:0;
+  }
+  s:7:"display";a:1:{
+    s:7:"default";a:5:{
+      s:5:"label";s:5:"above";
+      s:4:"type";s:21:"rgb_color_simple_text";
+      s:8:"settings";a:0:{}
+      s:6:"module";N;
+      s:6:"weight";i:11;
+    }
+  }
+  s:8:"required";i:0;
+  s:11:"description";s:0:"";
+  s:13:"default_value";N;
+}
+
+Page:
+a:7:{
+  s:5:"label";s:6:"Color2";
+  s:6:"widget";a:5:{
+    s:6:"weight";s:2:"-1";
+    s:4:"type";s:21:"rgb_color_colorpicker";
+    s:6:"module";s:9:"rgb_color";
+    s:6:"active";i:0;
+    s:8:"settings";a:0:{}
+  }
+  s:8:"settings";a:1:{
+    s:18:"user_register_form";b:0;
+  }
+  s:7:"display";a:1:{
+    s:7:"default";a:5:{
+      s:5:"label";s:5:"above";
+      s:4:"type";s:21:"rgb_color_simple_text";
+      s:8:"settings";a:0:{}
+      s:6:"module";N;
+      s:6:"weight";i:2;
+    }
+  }
+  s:8:"required";i:0;
+  s:11:"description";s:0:"";
+  s:13:"default_value";N;
+}
+*/
+
 
 /**
  * Implements hook_field_widget_info().
@@ -36,5 +95,52 @@ function rgb_color_field_widget_info() {
       'label' => t('RGB value as #FFFFFF'),
       'field types' => array('rgb_color'),
     ),
+    'rgb_color_3text' => array(
+      'label' => t('RGB text fields'),
+      'field types' => array('rgb_color'),
+    ),
+    'rgb_color_colorpicker' => array(
+      'label' => t('Color Picker'),
+      'field types' => array('rgb_color'),
+    ),
   );
 }
+
+
+/**
+ * Implements hook_field_widget_form().
+ *
+ * The hook is called if the field is created, e.g. in
+ * Content Type -> Manage Fields page.
+ */
+function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
+  $langcode, $items, $delta, $element) {
+  /*
+  dpm($form);
+  dpm($form_state);
+  dpm($field);
+  dpm($langcode);
+  dpm($delta);
+  */
+  /*
+  dpm($instance);
+  dpm($items);
+  dpm($element);
+
+  switch ($instance['widget']['type']) {
+    case '':;
+  }
+  */
+  return $element;
+}
+
+
+/**
+ * Implements hook_field_is_empty().
+ */
+/*
+function rgb_color_field_is_empty($item, $field) {
+  dpm($item);
+  dpm(field);
+}
+*/
