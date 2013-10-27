@@ -8,12 +8,14 @@
 /**
  * Implements hook_field_info().
  *
- * The hook is called on a module install or cache cleanup. The new field is
- * visible in content type -> manage fields page if hook_field_widget_info()
- * defines any widget for the new field type. At this moment the field is not
- * added to database (field_schema is not called yet).
+ * The hook is called on a module install, cache cleanup, Manage Fields.
+ * The new field is visible in content type -> manage fields page if
+ * hook_field_widget_info() defines any widget for the new field type.
+ * At this moment the field is not added to database (field_schema is not
+ * called yet).
  */
 function rgb_color_field_info() {
+  _rgb_color_trace(__FUNCTION__);
   // dpm(field_info_widget_types());
   // dpm(field_info_formatter_types());
   return array(
@@ -26,70 +28,72 @@ function rgb_color_field_info() {
   );
 }
 
-/*
- The RBG Color field has been added to Article and Page Content Type. Here's
-the content of column dat in field_config_instance table. hook_field_schema()
-is not called yet.
-Article:
-a:7:{
-  s:5:"label";s:5:"Color";
-  s:6:"widget";a:5:{
-    s:6:"weight";i:0;
-    s:4:"type";s:15:"rgb_color_3text";
-    s:6:"module";s:9:"rgb_color";
-    s:6:"active";i:0;
-    s:8:"settings";a:0:{}
-  }
-  s:8:"settings";a:1:{
-    s:18:"user_register_form";b:0;
-  }
-  s:7:"display";a:1:{
-    s:7:"default";a:5:{
-      s:5:"label";s:5:"above";
-      s:4:"type";s:21:"rgb_color_simple_text";
-      s:8:"settings";a:0:{}
-      s:6:"module";N;
-      s:6:"weight";i:11;
-    }
-  }
-  s:8:"required";i:0;
-  s:11:"description";s:0:"";
-  s:13:"default_value";N;
-}
-
-Page:
-a:7:{
-  s:5:"label";s:6:"Color2";
-  s:6:"widget";a:5:{
-    s:6:"weight";s:2:"-1";
-    s:4:"type";s:21:"rgb_color_colorpicker";
-    s:6:"module";s:9:"rgb_color";
-    s:6:"active";i:0;
-    s:8:"settings";a:0:{}
-  }
-  s:8:"settings";a:1:{
-    s:18:"user_register_form";b:0;
-  }
-  s:7:"display";a:1:{
-    s:7:"default";a:5:{
-      s:5:"label";s:5:"above";
-      s:4:"type";s:21:"rgb_color_simple_text";
-      s:8:"settings";a:0:{}
-      s:6:"module";N;
-      s:6:"weight";i:2;
-    }
-  }
-  s:8:"required";i:0;
-  s:11:"description";s:0:"";
-  s:13:"default_value";N;
-}
-*/
-
+/**
+ * The RBG Color field has been added to Article and Page Content Type.
+ * Here's the content of column data in field_config_instance table.
+ * Article:
+ * a:7:{
+ *   s:5:"label";s:5:"Color";
+ *   s:6:"widget";a:5:{
+ *     s:6:"weight";i:0;
+ *     s:4:"type";s:15:"rgb_color_3text";
+ *     s:6:"module";s:9:"rgb_color";
+ *     s:6:"active";i:0;
+ *     s:8:"settings";a:0:{}
+ *   }
+ *   s:8:"settings";a:1:{
+ *     s:18:"user_register_form";b:0;
+ *   }
+ *   s:7:"display";a:1:{
+ *     s:7:"default";a:5:{
+ *       s:5:"label";s:5:"above";
+ *       s:4:"type";s:21:"rgb_color_simple_text";
+ *       s:8:"settings";a:0:{}
+ *       s:6:"module";N;
+ *       s:6:"weight";i:11;
+ *     }
+ *   }
+ *   s:8:"required";i:0;
+ *   s:11:"description";s:0:"";
+ *   s:13:"default_value";N;
+ * }
+ *
+ * Page:
+ * a:7:{
+ *   s:5:"label";s:6:"Color2";
+ *   s:6:"widget";a:5:{
+ *     s:6:"weight";s:2:"-1";
+ *     s:4:"type";s:21:"rgb_color_colorpicker";
+ *     s:6:"module";s:9:"rgb_color";
+ *     s:6:"active";i:0;
+ *     s:8:"settings";a:0:{}
+ *   }
+ *   s:8:"settings";a:1:{
+ *     s:18:"user_register_form";b:0;
+ *   }
+ *   s:7:"display";a:1:{
+ *     s:7:"default";a:5:{
+ *       s:5:"label";s:5:"above";
+ *       s:4:"type";s:21:"rgb_color_simple_text";
+ *       s:8:"settings";a:0:{}
+ *       s:6:"module";N;
+ *       s:6:"weight";i:2;
+ *     }
+ *   }
+ *   s:8:"required";i:0;
+ *   s:11:"description";s:0:"";
+ *   s:13:"default_value";N;
+ * }
+ */
 
 /**
  * Implements hook_field_widget_info().
+ *
+ * The hook is called after hook_field_info().
  */
 function rgb_color_field_widget_info() {
+  _rgb_color_trace(__FUNCTION__);
+
   return array(
     'rgb_color_text' => array(
       'label' => t('RGB value as #FFFFFF'),
@@ -106,41 +110,79 @@ function rgb_color_field_widget_info() {
   );
 }
 
-
 /**
  * Implements hook_field_widget_form().
  *
- * The hook is called if the field is created, e.g. in
- * Content Type -> Manage Fields page.
+ * The hook is called when the field is created, for example in
+ * Content Type -> Manage Fields page, when a content containing the field is
+ * created or edited (the content type form is displayed).
  */
 function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
   $langcode, $items, $delta, $element) {
-  /*
-  dpm($form);
-  dpm($form_state);
-  dpm($field);
-  dpm($langcode);
-  dpm($delta);
-  */
-  /*
-  dpm($instance);
-  dpm($items);
+  _rgb_color_trace(__FUNCTION__);
+
+  // dpm($form);
+  // dpm($form_state);
+  // dpm($field);
+  // dpm($instance);
+  // dpm($langcode);
+  // dpm($items);
+  // dpm($delta);
   dpm($element);
 
+  $value = isset($items[$delta]['rgb']) ? $items[$delta]['rgb'] : '';
+  $element['rgb'] = array();
+  // $element += array('#delta' => $delta);
+
   switch ($instance['widget']['type']) {
-    case '':;
+    case 'rgb_color_text':
+      $element['rgb'] += array(
+        '#type' => 'textfield',
+        '#title' => t("Event's RGB Color"),
+        '#default_value' => $value,
+        // Allow a slightly larger size than the field length to allow for some
+        // configurations where all characters won't fit in input field.
+        '#size' => 7,
+        '#maxlength' => 7,
+      );
+      break;
+
+    case 'rgb_color_3text':
+      $element['rgb'] = array(
+      '#type' => 'fieldset',
+      );
+      foreach(array('r' => 'Red', 'g' => 'Green', 'b' => 'Blue') as $key => $title) {
+        $element[$key] = array(
+          '#type' => 'textfield',
+          '#title' => $title,
+          '#size' => 2,
+        );
+      }
+      break;
+
+    case 'rgb_color_colorpicker':
+      break;
   }
-  */
+
+  dpm($element);
   return $element;
 }
 
-
 /**
  * Implements hook_field_is_empty().
+ *
+ * The hook is called on saving the content type
  */
-/*
 function rgb_color_field_is_empty($item, $field) {
-  dpm($item);
-  dpm(field);
+  _rgb_color_trace(__FUNCTION__);
+  // dpm($item);
+  // dpm($field);
+  return FALSE;
 }
-*/
+
+/**
+ * Traces module functions' calls.
+ */
+function _rgb_color_trace($mark) {
+  dpm($mark);
+}
