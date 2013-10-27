@@ -9,6 +9,7 @@
  * Implements hook_field_schema().
  */
 function rgb_color_field_schema($field) {
+  _rgb_color_trace(__FUNCTION__);
   dpm($field);
 
   return array(
@@ -23,4 +24,8 @@ function rgb_color_field_schema($field) {
       'rgb' => array('rgb'),
     ),
   );
+}
+
+function _rgb_color_trace($mark) {
+  dpm($mark);
 }
