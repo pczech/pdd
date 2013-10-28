@@ -131,13 +131,32 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
   // dpm($langcode);
   // dpm($items);
   // dpm($delta);
-  // dpm($element);
+  dpm($element);
 
   $value = isset($items[$delta]['rgb']) ? $items[$delta]['rgb'] : '';
   $element['rgb'] = array();
   // $element += array('#delta' => $delta);
 
   switch ($instance['widget']['type']) {
+    case 'rgb_color_colorpicker':
+      $element['rgb'] += array(
+        '#attributes' => array(
+          'class' => array('edit-rgb-color-colorpicker'),
+        ),
+        '#suffix' => '<div class="rgb-color-colorpicker"></div>',
+        '#attached' => array(
+          // Add Farbtastic colorpicker.
+          'library' => array(
+            array('system', 'farbtastic'),
+          ),
+          // Add javascript to trigger the colorpicker.
+          'js' => array(
+            drupal_get_path('module', 'rgb_color') . '/rgb_color.js',
+          ),
+        ),
+      );
+      //NO BREAK!
+
     case 'rgb_color_text':
       $element['rgb'] += array(
         '#type' => 'textfield',
@@ -151,7 +170,7 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
       break;
 
     case 'rgb_color_3text':
-      $element['rgb'] = array(
+      $element['rgb'] += array(
         '#type' => 'fieldset',
         '#element_validate' => array('rgb_color_3text_validate'),
         /*
@@ -169,9 +188,6 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
           '#size' => 2,
         );
       }
-      break;
-
-    case 'rgb_color_colorpicker':
       break;
   }
 
