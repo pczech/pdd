@@ -5,6 +5,7 @@
  * An example field using the Field API.
  */
 
+
 /**
  * Implements hook_field_info().
  *
@@ -27,6 +28,7 @@ function rgb_color_field_info() {
     ),
   );
 }
+
 
 /**
  * The RBG Color field has been added to Article and Page Content Type.
@@ -110,6 +112,7 @@ function rgb_color_field_widget_info() {
   );
 }
 
+
 /**
  * Implements hook_field_widget_form().
  *
@@ -128,7 +131,7 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
   // dpm($langcode);
   // dpm($items);
   // dpm($delta);
-  dpm($element);
+  // dpm($element);
 
   $value = isset($items[$delta]['rgb']) ? $items[$delta]['rgb'] : '';
   $element['rgb'] = array();
@@ -149,12 +152,20 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
 
     case 'rgb_color_3text':
       $element['rgb'] = array(
-      '#type' => 'fieldset',
+        '#type' => 'fieldset',
+        '#element_validate' => array('rgb_color_3text_validate'),
+        /*
+        '#attached' => array(
+          'css' => array(
+            drupal_get_path('module', 'rgb_color') . '/rgb_color.css',
+          ),
+        ),
+        */
       );
-      foreach(array('r' => 'Red', 'g' => 'Green', 'b' => 'Blue') as $key => $title) {
-        $element[$key] = array(
+      foreach (array('r' => 'Red', 'g' => 'Green', 'b' => 'Blue') as $key => $title) {
+        $element['rgb'][$key] = array(
           '#type' => 'textfield',
-          '#title' => $title,
+          '#title' => check_plain($title),
           '#size' => 2,
         );
       }
@@ -168,10 +179,32 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
   return $element;
 }
 
+
+/**
+ * Validate the individual RGB fields and convert them into a single text.
+ *
+ * The field type defines a single text column, rgb, which needs
+ * an HTML color code. Define an element validate handler that converts our
+ * r, g, b fields into a simulated single “rgb” form element.
+ *
+ * The hook is called on saving the content type. Validation order:
+ * rgb_color_3text_validate()
+ * rgb_color_is_empty()
+ * rgb_color_validate()
+ */
+function rgb_color_3text_validate($element, &$form_state, $form) {
+  _rgb_color_trace(__FUNCTION__);
+  // dpm($form_state);
+  $value = '#FFFFFF';
+  form_set_value($element, array('rgb' => $value), $form_state);
+  // dpm($form_state);
+}
+
+
 /**
  * Implements hook_field_is_empty().
  *
- * The hook is called on saving the content type
+ * The hook is called on saving the content type.
  */
 function rgb_color_field_is_empty($item, $field) {
   _rgb_color_trace(__FUNCTION__);
@@ -179,6 +212,17 @@ function rgb_color_field_is_empty($item, $field) {
   // dpm($field);
   return FALSE;
 }
+
+
+/**
+ * Implements hook_field_validate().
+ *
+ * The hook is called on saving the content type.
+ */
+function rgb_color_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  _rgb_color_trace(__FUNCTION__);
+}
+
 
 /**
  * Traces module functions' calls.

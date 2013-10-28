@@ -156,5 +156,7 @@ hook_field_widget_info
 hook_field_widget_form
 empty
 hook_field_is_empty
+hook_field_validate
+form_set_value
 
 
