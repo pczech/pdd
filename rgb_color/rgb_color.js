@@ -1,3 +1,11 @@
+/**
+ * @file
+ * Javascript for Field Example.
+ */
+
+/**
+ * Provides a farbtastic colorpicker for the fancier widget.
+ */
 (function ($) {
   Drupal.behaviors.rgb_color_colorpicker = {
     attach: function(context) {
