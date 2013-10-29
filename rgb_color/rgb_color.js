@@ -3,7 +3,7 @@
     attach: function(context) {
       $(".edit-rgb-color-colorpicker").live("focus", function(event) {
         var edit_field = this;
-        var picker = $(this).closest('tr').find(".rgb-color-colorpicker");
+        var picker = $(this).closest('div').parent().find(".rgb-color-colorpicker");
         
         // Hide all color pickers except this one.
         $(".rgb-color-colorpicker").hide();
