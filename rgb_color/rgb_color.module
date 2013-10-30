@@ -418,5 +418,5 @@ function rgb_color_field_formatter_view($entity_type, $entity, $field, $instance
  * Traces module functions' calls.
  */
 function _rgb_color_trace($mark) {
-  dpm($mark);
+  // dpm($mark);
 }
