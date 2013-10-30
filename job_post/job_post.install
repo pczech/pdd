@@ -99,6 +99,21 @@ function _job_post_installed_instances() {
  * Implements hook_uninstall().
  */
 function job_post_uninstall() {
+  // Gather all the example content that might have been created while
+  // this module was enabled.
+  $result = db_query('SELECT nid FROM {node} n WHERE n.type = :type',
+    array(':type' => 'job_post'));
+
+  $nids = array();
+  foreach ($result as $row) {
+    $nids[] = $row->nid;
+  }
+
+  // dpm($nids);
+
+  // Delete all the nodes at once
+  node_delete_multiple($nids);
+
   /*
   // Loop over any remaining field instances attached to the job_post
   // content type (such as the body field) and delete them individually.
