@@ -75,6 +75,7 @@ node_types_rebuild
 node_type_delete
 node_content_form
 node_type_get_types
+node_delete_multiple
 
 Generic
 -------
