@@ -156,6 +156,8 @@ hook_field_widget_info
 hook_field_widget_form
 hook_field_is_empty
 hook_field_validate
+hook_field_formatter_info
+hook_field_formatter_view
 empty
 substr
 hexdec
@@ -164,4 +166,4 @@ preg_match
 preg_match_all
 form_set_value
 form_error
-
+drupal_add_css
