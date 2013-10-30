@@ -1,0 +1,4 @@
+name = RGB Color
+description = Creates a custom field for inputting and displaying text in a colorful fashion.
+package = Pro Drupal Development
+core = 7.x

@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Install file for RGB Color module.
+ */
+
+/**
+ * Implements hook_field_schema().
+ *
+ * The hook is called first time if the field has been created first time,
+ * for example if user adds the field in content type -> manage fields page.
+ * The field definition is added to field_config, field_config_instance then,
+ * the table field_data_field_color is created and the columns defined in
+ * this schema are added to the table.
+ */
+function rgb_color_field_schema($field) {
+  _rgb_color_trace(__FUNCTION__);
+  // dpm($field);
+
+  return array(
+    'columns' => array(
+      'rgb' => array(
+        'type' => 'varchar',
+        'length' => 7,
+        'not null' => FALSE,
+      ),
+    ),
+    'indexes' => array(
+      'rgb' => array('rgb'),
+    ),
+  );
+}
