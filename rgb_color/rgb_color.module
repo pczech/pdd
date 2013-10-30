@@ -140,7 +140,7 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
   // dpm($langcode);
   // dpm($items);
   // dpm($delta);
-   dpm($element);
+  // dpm($element);
 
    $widget = $element;
   // What is it for?
@@ -217,7 +217,7 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
 
   $element['rgb'] = $widget;
 
-  dpm($element);
+  // dpm($element);
   return $element;
 }
 
@@ -236,12 +236,37 @@ function rgb_color_field_widget_form(&$form, &$form_state, $field, $instance,
  */
 function rgb_color_3text_validate($element, &$form_state, $form) {
   _rgb_color_trace(__FUNCTION__);
-  dpm($element);
-  dpm($form_state);
-  dpm($form);
+  // dpm($element);
+  // dpm($form_state);
+  // dpm($form);
 
-  $value = '#ffffff';
-  form_set_value($element, $value, $form_state);
+  $delta = $element['#delta'];
+  $language = $element['#language'];
+  $field = $form_state['field'][$element['#field_name']][$language]['field'];
+  $field_name = $field['field_name'];
+
+  if (isset($form_state['values'][$field_name][$language][$delta]['rgb'])) {
+    $values = $form_state['values'][$field_name][$language][$delta]['rgb'];
+    foreach ($values as $field_id => $field_val) {
+      // If they left any empty, we'll set the value empty and quit.
+      if (strlen($field_val) == 0) {
+        form_set_value($element, '', $form_state);
+        // dpm($form_state);
+        return;
+      }
+      // If they gave us anything that's not hex, reject it.
+      $color_val = hexdec($field_val);
+      if ( (strlen($field_val) != 2) || $color_val < 0 || $color_val > 255) {
+        form_error($element[$field_id], t("Saturation value must be a 2-digit hexadecimal value between 00 and ff."));
+      }
+    }
+  }
+
+  $keys = array_keys($values);
+  $rgb = sprintf('#%02s%02s%02s', $values[$keys[0]], $values[$keys[1]], $values[$keys[2]]);
+  dpm($form_state);
+  form_set_value($element, $rgb, $form_state);
+  dpm($form_state);
 }
 
 

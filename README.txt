@@ -158,8 +158,10 @@ hook_field_is_empty
 hook_field_validate
 empty
 substr
+hexdec
 array_shift
 preg_match
 preg_match_all
 form_set_value
+form_error
 
