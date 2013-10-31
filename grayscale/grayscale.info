@@ -1,3 +1,5 @@
 name = Grayscale
 description = Learning theming
 core = 7.x
+
+stylesheets[all][] = css/style.css
