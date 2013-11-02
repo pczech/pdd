@@ -35,6 +35,7 @@ function grayscale_process_html(&$variables) {
  *   An associative array containing:
  *   - breadcrumb: An array containing the breadcrumb links.
  */
+/*
 function grayscale_breadcrumb($variables) {
   $breadcrumb = $variables['breadcrumb'];
 
@@ -49,3 +50,4 @@ function grayscale_breadcrumb($variables) {
     return $output;
   }
 }
+*/
