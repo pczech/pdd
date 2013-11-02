@@ -26,3 +26,26 @@ function grayscale_process_html(&$variables) {
   $variables['classes'] = trim(implode(' ', $classes));
   // dpm($variables);
 }
+
+
+/**
+ * Returns HTML for a breadcrumb trail.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - breadcrumb: An array containing the breadcrumb links.
+ */
+function grayscale_breadcrumb($variables) {
+  $breadcrumb = $variables['breadcrumb'];
+
+  dpm($breadcrumb);
+
+  if (!empty($breadcrumb)) {
+    // Provide a navigational heading to give context for breadcrumb links to
+    // screen-reader users. Make the heading invisible with .element-invisible.
+    $output = '<h2 class="element-invisible">' . t('You are here') . '</h2>';
+
+    $output .= '<div class="breadcrumb">' . implode(' * ', $breadcrumb) . '</div>';
+    return $output;
+  }
+}
