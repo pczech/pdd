@@ -3,3 +3,25 @@ description = Learning theming
 core = 7.x
 
 stylesheets[all][] = css/style.css
+
+features[] = logo
+features[] = name
+; features[] = slogan
+; features[] = primary_links
+; features[] = secondary_links
+
+settings[toggle_name] = 0
+
+settings[font_family] = 'ff-a'
+settings[font_size] = 'fs-12'
+
+
+regions[sidebar_first] = Left sidebar
+; regions[sidebar_second] = Right sidebar
+regions[content] = Content
+regions[page_top] = Page top
+regions[page_bottom] = Page bottom
+regions[help] = Help
+regions[header] = Header
+regions[footer] = Footer
+; regions[highlighted] = Highlighted
