@@ -123,6 +123,7 @@
     <div id="main-wrapper"><div id="main" class="clearfix">
 
       <div id="content" class="column"><div class="section">
+        <?php if ($is_front): ?><div id="welcome_message"><?php print "Welcome to My Site!"; ?></div><?php endif; ?>
         <?php if (!empty($page['highlighted'])): ?><div id="highlighted"><?php print render($page['highlighted']); ?></div><?php endif; ?>
         <a id="main-content"></a>
         <?php print render($title_prefix); ?>
