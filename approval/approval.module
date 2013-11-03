@@ -23,11 +23,18 @@ function approval_block_info() {
 
   $blocks['pending_comments'] = array(
     'info' => t('Pending comments'),
-    // Enable the block by defaul for Sidebar first region.
+    // Enable the block by default for Sidebar first region.
     'status' => 1,
     'region' => 'sidebar_first',
     'weight' => 0,
     // 'visibility' => 1,
+  );
+
+  $blocks['unpublished_nodes'] = array(
+    'info' => t('Unpublished nodes'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'weight' => 0,
   );
 
   return $blocks;
@@ -51,7 +58,17 @@ function approval_block_configure($delta = '') {
         '#title' => t('Number of displayed comments'),
         '#description' => t('Enter the number of pending comments that will appear in the block.'),
         '#size' => 6,
-        '#default_value' => variable_get('approval_pending_comments', 5),
+        '#default_value' => variable_get('approval_pending_comments'),
+      );
+      break;
+
+    case 'unpublished_nodes':
+      $form['approval_unpublished_nodes'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Number of displayed nodes'),
+        '#description' => t('Enter the number of unpublished nodes that will appear in the block.'),
+        '#size' => 6,
+        '#default_value' => variable_get('approval_unpublished_nodes'),
       );
       break;
   }
@@ -71,11 +88,19 @@ function approval_block_save($delta = '', $edit = array()) {
     case 'pending_comments':
       variable_set('approval_pending_comments', (int) $edit['approval_pending_comments']);
       break;
+
+    case 'unpublished_nodes':
+      variable_set('approval_unpublished_nodes', (int) $edit['approval_unpublished_nodes']);
+      break;
   }
 }
 
 /**
  * Implements hook_block_view().
+ *
+ * The hook is called on module activation, then $limit is not set, thus
+ * SQL query is invalid. Proposal: add also here default value to
+ * variable_get or add hook_install(), and use variable_set(default) there.
  */
 function approval_block_view($delta = '') {
   _approval_trace(__FUNCTION__);
@@ -85,6 +110,12 @@ function approval_block_view($delta = '') {
     case 'pending_comments':
       // The subject set here is overwritten by block title if set.
       $block['subject'] = t('Pending comments');
+      $block['content'] = _approval_block_content($delta);
+      break;
+
+    case 'unpublished_nodes':
+      // The subject set here is overwritten by block title if set.
+      $block['subject'] = t('Unpublished nodes');
       $block['content'] = _approval_block_content($delta);
       break;
   }
@@ -106,6 +137,19 @@ function _approval_block_content($delta) {
         $items = array();
         foreach ($result as $row) {
           $items[] = l($row->subject, 'comment/' . $row->cid . '/edit');
+        }
+        return array('#markup' => theme('item_list', array('items' => $items)));
+      }
+      break;
+
+    case 'unpublished_nodes':
+      if (user_access('administer nodes')) {
+        $limit = variable_get('approval_unpublished_nodes');
+        $result = db_query_range("SELECT nid, title FROM {node}
+          WHERE status = 0", 0, $limit);
+        $items = array();
+        foreach ($result as $row) {
+          $items[] = l($row->title, 'node/' . $row->nid . '/edit');
         }
         return array('#markup' => theme('item_list', array('items' => $items)));
       }

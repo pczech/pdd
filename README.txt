@@ -3,6 +3,10 @@ Hooks
 hook_action_info
 hook_action_info_alter
 node_add_body_field
+hook_block_configure
+hook_block_info
+hook_block_save
+hook_block_view
 hook_delete
 hook_insert
 hook_install
@@ -93,6 +97,7 @@ db_drop_field
 db_drop_index
 db_insert
 db_query
+db_query_range
 db_query_temporary
 db_rename_table
 db_select
@@ -176,10 +181,3 @@ users
 field_data_annotate
 field_data_job_post_company
 field_data_field_color
-
-Block API
-==========
-hook_block_info
-hook_block_configure
-hook_block_save
-hook_block_view
