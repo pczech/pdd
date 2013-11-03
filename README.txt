@@ -16,6 +16,7 @@ hook_field_widget_info
 hook_field_widget_form
 hook_form
 hook_form_alter
+hook_form_system_theme_settings_alter
 hook_load
 hook_menu
 hook_menu_alter
@@ -28,6 +29,8 @@ hook_node_load
 hook_node_update
 hook_node_view
 hook_permission
+hook_preprocess_HOOK
+hook_process_HOOK
 hook_query_alter
 hook_query_TAG_alter
 hook_schema
@@ -124,6 +127,7 @@ variable_set
 variable_get
 variable_del
 theme
+theme_get_setting
 watchdog
 
 
@@ -131,7 +135,9 @@ PHP
 ---
 array_shift
 empty
+explode
 hexdec
+implode
 is_numeric
 is_int
 is_object
@@ -143,6 +149,7 @@ preg_match_all
 session_destroy
 strlen
 substr
+trim
 unset
 
 
@@ -163,12 +170,3 @@ users
 field_data_annotate
 field_data_job_post_company
 field_data_field_color
-
-grayscale
---------------
-hook_form_system_theme_settings_alter
-theme_get_setting
-explode
-implode
-trim
-hook_process_HOOK
