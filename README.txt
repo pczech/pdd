@@ -161,6 +161,7 @@ block
 block_custom
 block_node_type
 block_role
+comment
 field_config
 field_config_instance
 menu_router
@@ -180,3 +181,5 @@ Block API
 ==========
 hook_block_info
 hook_block_configure
+hook_block_save
+hook_block_view

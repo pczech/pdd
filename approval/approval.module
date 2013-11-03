@@ -74,6 +74,45 @@ function approval_block_save($delta = '', $edit = array()) {
   }
 }
 
+/**
+ * Implements hook_block_view().
+ */
+function approval_block_view($delta = '') {
+  _approval_trace(__FUNCTION__);
+
+  $block = array();
+  switch ($delta) {
+    case 'pending_comments':
+      // The subject set here is overwritten by block title if set.
+      $block['subject'] = t('Pending comments');
+      $block['content'] = _approval_block_content($delta);
+      break;
+  }
+
+  return $block;
+}
+
+
+/**
+ * Creates renderable array defining given block.
+ */
+function _approval_block_content($delta) {
+  switch ($delta) {
+    case 'pending_comments':
+      if (user_access('administer comments')) {
+        $limit = variable_get('approval_pending_comments');
+        $result = db_query("SELECT cid, subject FROM {comment}
+          WHERE status = 0 limit $limit");
+        $items = array();
+        foreach ($result as $row) {
+          $items[] = l($row->subject, 'comment/' . $row->cid . '/edit');
+        }
+        return array('#markup' => theme('item_list', array('items' => $items)));
+      }
+      break;
+  }
+}
+
 
 /**
  * Traces module functions' calls.
