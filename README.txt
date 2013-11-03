@@ -179,4 +179,4 @@ field_data_field_color
 Block API
 ==========
 hook_block_info
-
+hook_block_configure
