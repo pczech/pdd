@@ -6,8 +6,17 @@ node_add_body_field
 hook_delete
 hook_insert
 hook_install
+hook_field_formatter_info
+hook_field_formatter_view
+hook_field_info
+hook_field_is_empty
+hook_field_schema
+hook_field_validate
+hook_field_widget_info
+hook_field_widget_form
 hook_form
 hook_form_alter
+hook_form_system_theme_settings_alter
 hook_load
 hook_menu
 hook_menu_alter
@@ -20,6 +29,8 @@ hook_node_load
 hook_node_update
 hook_node_view
 hook_permission
+hook_preprocess_HOOK
+hook_process_HOOK
 hook_query_alter
 hook_query_TAG_alter
 hook_schema
@@ -37,11 +48,13 @@ hook_view
 
 Form API
 --------
+form_error
 form_set_error
-system_settings_form
-
+form_set_value
 FORM_ID_submit
 FORM_ID_validate
+system_settings_form
+
 
 Field API
 ---------
@@ -55,19 +68,6 @@ field_info_instances
 field_purge_batch
 field_update_instance
 
-User API
---------
-user_access
-user_external_login_register
-user_is_logged_in
-
-
-actions
--------
-MODULE_FUNCNAME_action
-MODULE_FUNCNAME_action_form
-MODULE_FUNCNAME_action_submit
-MODULE_FUNCNAME_action_validate
 
 Node API
 --------
@@ -77,8 +77,40 @@ node_content_form
 node_type_get_types
 node_delete_multiple
 
+
+User API
+--------
+user_access
+user_external_login_register
+user_is_logged_in
+
+
+Database API
+------------
+db_add_field
+db_delete
+db_drop_field
+db_drop_index
+db_insert
+db_query
+db_query_temporary
+db_rename_table
+db_select
+db_set_active
+db_update
+
+
+actions
+-------
+MODULE_FUNCNAME_action
+MODULE_FUNCNAME_action_form
+MODULE_FUNCNAME_action_submit
+MODULE_FUNCNAME_action_validate
+
+
 Generic
 -------
+drupal_add_css
 drupal_anonymous_user
 drupal_get_form
 drupal_get_path
@@ -87,31 +119,38 @@ drupal_set_title
 drupal_strtolower
 drupal_substr
 drupal_write_record
-
-module_invoke_all
-
-variable_set
-variable_get
-variable_del
-watchdog
-
 get_t
 l
 t
+module_invoke_all
+variable_set
+variable_get
+variable_del
 theme
+theme_get_setting
+watchdog
+
 
 PHP
 ---
+array_shift
 empty
-unset
+explode
+hexdec
+implode
 is_numeric
 is_int
 is_object
 isset
 intval
 in_array
+preg_match
+preg_match_all
 session_destroy
 strlen
+substr
+trim
+unset
 
 
 Database tables
@@ -130,41 +169,4 @@ users
 
 field_data_annotate
 field_data_job_post_company
-
-
-database API
-------------
-db_add_field
-db_delete
-db_drop_field
-db_drop_index
-db_insert
-db_query
-db_query_temporary
-db_rename_table
-db_select
-db_set_active
-db_update
-
-
-
-color_example
-/////////////
-
-hook_field_info
-hook_field_schema
-hook_field_widget_info
-hook_field_widget_form
-hook_field_is_empty
-hook_field_validate
-hook_field_formatter_info
-hook_field_formatter_view
-empty
-substr
-hexdec
-array_shift
-preg_match
-preg_match_all
-form_set_value
-form_error
-drupal_add_css
+field_data_field_color
