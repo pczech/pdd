@@ -51,3 +51,12 @@ function grayscale_breadcrumb($variables) {
   }
 }
 */
+
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grayscale_preprocess_breadcrumb(&$variables) {
+  // dpm($variables);
+  $variables['breadcrumb_delimiter'] = '#';
+}
