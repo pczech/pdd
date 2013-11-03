@@ -1,0 +1,166 @@
+<?php
+
+/**
+ * @file
+ * Implements various blocks to improve pending content workflow.
+ */
+
+
+/**
+ * Implements hook_block_info().
+ *
+ * The hook is called on block config page (admin/structure/block). Then the
+ * defined blocks appear in the list of blocks on the block administration
+ * page, but 'status', 'region' parametes seems not to work and the block
+ * cannot be enabled.
+ *
+ * The hook is called also on module activation, and only then 'status',
+ * 'region' parameters are processed and the block can be activated. In other
+ * words, the hook shall be ready before the module is enabled.
+ */
+function approval_block_info() {
+  _approval_trace(__FUNCTION__);
+
+  $blocks['pending_comments'] = array(
+    'info' => t('Pending comments'),
+    // Enable the block by default for Sidebar first region.
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'weight' => 0,
+    // 'visibility' => 1,
+  );
+
+  $blocks['unpublished_nodes'] = array(
+    'info' => t('Unpublished nodes'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'weight' => 0,
+  );
+
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_configure().
+ *
+ * The hook is called on accessing the block configuration page.
+ */
+function approval_block_configure($delta = '') {
+  _approval_trace(__FUNCTION__);
+  // dpm($delta);
+
+  $form = array();
+  switch ($delta) {
+    case 'pending_comments':
+      $form['approval_pending_comments'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Number of displayed comments'),
+        '#description' => t('Enter the number of pending comments that will appear in the block.'),
+        '#size' => 6,
+        '#default_value' => variable_get('approval_pending_comments'),
+      );
+      break;
+
+    case 'unpublished_nodes':
+      $form['approval_unpublished_nodes'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Number of displayed nodes'),
+        '#description' => t('Enter the number of unpublished nodes that will appear in the block.'),
+        '#size' => 6,
+        '#default_value' => variable_get('approval_unpublished_nodes'),
+      );
+      break;
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function approval_block_save($delta = '', $edit = array()) {
+  _approval_trace(__FUNCTION__);
+  // dpm($delta);
+  // dpm($edit);
+
+  switch ($delta) {
+    case 'pending_comments':
+      variable_set('approval_pending_comments', (int) $edit['approval_pending_comments']);
+      break;
+
+    case 'unpublished_nodes':
+      variable_set('approval_unpublished_nodes', (int) $edit['approval_unpublished_nodes']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * The hook is called on module activation, then $limit is not set, thus
+ * SQL query is invalid. Proposal: add also here default value to
+ * variable_get or add hook_install(), and use variable_set(default) there.
+ */
+function approval_block_view($delta = '') {
+  _approval_trace(__FUNCTION__);
+
+  $block = array();
+  switch ($delta) {
+    case 'pending_comments':
+      // The subject set here is overwritten by block title if set.
+      $block['subject'] = t('Pending comments');
+      $block['content'] = _approval_block_content($delta);
+      break;
+
+    case 'unpublished_nodes':
+      // The subject set here is overwritten by block title if set.
+      $block['subject'] = t('Unpublished nodes');
+      $block['content'] = _approval_block_content($delta);
+      break;
+  }
+
+  return $block;
+}
+
+
+/**
+ * Creates renderable array defining given block.
+ */
+function _approval_block_content($delta) {
+  switch ($delta) {
+    case 'pending_comments':
+      if (user_access('administer comments')) {
+        $limit = variable_get('approval_pending_comments');
+        $result = db_query("SELECT cid, subject FROM {comment}
+          WHERE status = 0 limit $limit");
+        $items = array();
+        foreach ($result as $row) {
+          $items[] = l($row->subject, 'comment/' . $row->cid . '/edit');
+        }
+        return array('#markup' => theme('item_list', array('items' => $items)));
+      }
+      break;
+
+    case 'unpublished_nodes':
+      if (user_access('administer nodes')) {
+        $limit = variable_get('approval_unpublished_nodes');
+        $result = db_query_range("SELECT nid, title FROM {node}
+          WHERE status = 0", 0, $limit);
+        $items = array();
+        foreach ($result as $row) {
+          $items[] = l($row->title, 'node/' . $row->nid . '/edit');
+        }
+        return array('#markup' => theme('item_list', array('items' => $items)));
+      }
+      break;
+  }
+}
+
+
+/**
+ * Traces module functions' calls.
+ */
+function _approval_trace($mark) {
+  dpm($mark);
+}

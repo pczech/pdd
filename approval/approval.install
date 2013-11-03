@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall hooks for approval module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function approval_install() {
+  // Set default values here.
+  variable_set('approval_pending_comments', 5);
+  variable_set('approval_unpublished_nodes', 5);
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function approval_uninstall() {
+  variable_del('approval_pending_comments');
+  variable_del('approval_unpublished_nodes');
+}
