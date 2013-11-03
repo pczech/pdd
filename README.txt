@@ -157,6 +157,10 @@ Database tables
 ---------------
 actions
 authmap
+block
+block_custom
+block_node_type
+block_role
 field_config
 field_config_instance
 menu_router
@@ -167,6 +171,12 @@ node_access
 variable
 users
 
+
 field_data_annotate
 field_data_job_post_company
 field_data_field_color
+
+Block API
+==========
+hook_block_info
+

@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Implements various blocks to improve pending content workflow.
+ */
+
+
+/**
+ * Implements hook_block_info().
+ *
+ * The hook is called on block config page (admin/structure/block). Then the
+ * defined blocks appear in the list of blocks on the block administration
+ * page, but 'status', 'region' parametes seems not to work and the block
+ * cannot be enabled.
+ *
+ * The hook is called also on module activation, and only then 'status',
+ * 'region' parameters are processed and the block can be activated. In other
+ * words, the hook shall be ready before the module is enabled.
+ */
+function approval_block_info() {
+  _approval_trace(__FUNCTION__);
+
+  $blocks['pending_comments'] = array(
+    'info' => t('Pending comments'),
+    // Enable the block by defaul for Sidebar first region.
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'weight' => 0,
+    // 'visibility' => 1,
+  );
+
+  return $blocks;
+}
+
+
+/**
+ * Traces module functions' calls.
+ */
+function _approval_trace($mark) {
+  dpm($mark);
+}
