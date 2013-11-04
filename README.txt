@@ -121,6 +121,7 @@ drupal_get_form
 drupal_get_path
 drupal_goto
 drupal_set_title
+drupal_set_message
 drupal_strtolower
 drupal_substr
 drupal_write_record

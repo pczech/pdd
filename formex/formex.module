@@ -4,3 +4,80 @@
  * @file
  * Play with the Form API.
  */
+
+/**
+ * Implements hook_menu().
+ */
+function formex_menu() {
+  $items = array();
+
+  $items['formex'] = array(
+    'title' => 'View the sample form',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('formex_nameform'),
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Creates form 'nameform'.
+ */
+function formex_nameform($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  $form['user_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your name'),
+    '#description' => t('Please enter your name'),
+  );
+
+  $form['name_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+
+/**
+ * Form validation function FORM_ID_validate.
+ */
+function formex_nameform_validate($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  if ($form_state['values']['user_name'] == 'King Kong') {
+    // We notify the form API that this field has failed validation.
+    form_set_error('user_name',
+      t('King Kong is not allowed to use this form.'));
+  }
+}
+
+
+/**
+ * Form submision function FORM_ID_submit.
+ */
+function formex_nameform_submit($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  $name = $form_state['values']['user_name'];
+  drupal_set_message(t('Thanks for filling out the form, %name',
+    array('%name' => $name)));
+}
+
+
+/**
+ * Traces module functions' calls.
+ */
+function _formex_trace($mark) {
+  // dpm($mark);
+}
