@@ -30,10 +30,36 @@ function formex_nameform($form, &$form_state) {
   // dpm($form);
   // dpm($form_state);
 
-  $form['user_name'] = array(
+  $form['name'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Your name'),
+    '#description' => t('What people call you.'),
+  );
+
+  $form['name']['user_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Your name'),
-    '#description' => t('Please enter your name'),
+    '#description' => t('Please enter your name.'),
+  );
+
+  $form['color'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Color'),
+    '#description' => t('This fieldset contains Color field.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['color_options'] = array(
+    '#type' => 'value',
+    '#value' => array(t('red'), t('green'), t('blue')),
+  );
+
+  $form['color']['favorite_color'] = array(
+    '#type' => 'select',
+    '#title' => t('Favorite Color'),
+    '#description' => t('Please select your favorite color.'),
+    '#options' => $form['color_options']['#value'],
   );
 
   $form['name_submit'] = array(
@@ -63,15 +89,22 @@ function formex_nameform_validate($form, &$form_state) {
 
 /**
  * Form submision function FORM_ID_submit.
+ *
+ * Warning. The form processor flattens the form values, so the following
+ * access is valid:
+ * $form[values]['user_name'] (and not $form['values']['color']['user_name'])
+ * $form['values']['favorite_color']
  */
 function formex_nameform_submit($form, &$form_state) {
   _formex_trace(__FUNCTION__);
-  // dpm($form);
-  // dpm($form_state);
+  dpm($form);
+  dpm($form_state);
 
   $name = $form_state['values']['user_name'];
-  drupal_set_message(t('Thanks for filling out the form, %name',
-    array('%name' => $name)));
+  $color_key = $form_state['values']['favorite_color'];
+  $color = $form_state['values']['color_options'][$color_key];
+  drupal_set_message(t('%name loves the color %color!',
+    array('%name' => $name, '%color' => $color)));
 }
 
 
