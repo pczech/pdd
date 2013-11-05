@@ -112,8 +112,42 @@ function formex_nameform_submit($form, &$form_state) {
 
 
 /**
+ * Implements hook_theme().
+ *
+ * The hook is called on cache clear.
+ */
+function formex_theme($existing, $type, $theme, $path) {
+  _formex_trace(__FUNCTION__);
+  return array(
+    'formex_nameform' => array(
+      'render element' => 'form_dupa',
+      'template' => 'formex-nameform',
+    )
+  );
+}
+
+
+/**
+* Assign the elements of the form to variables so the themer can use those
+* values to control how the form elements are displayed, or alternatively
+* displaying the whole form as constructed above.
+*
+* The template_preprocess_HOOK function is called before the template file is
+* invoked. HOOK is theme hook name defined in hook_theme. Drupal calls
+* automatically theme_FORM_ID function for theming, the theme function named
+* differently shall be indicated by #theme parameter in the form. So, if HOOK
+* name is the same like FORM_ID name, then the theme function (thus this
+* preprocess function too) is called automatically.
+*/
+function template_preprocess_formex_nameform(&$variables) {
+  _formex_trace(__FUNCTION__);
+  dpm($variables);
+}
+
+
+/**
  * Traces module functions' calls.
  */
 function _formex_trace($mark) {
-  // dpm($mark);
+  dpm($mark);
 }
