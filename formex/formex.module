@@ -43,11 +43,14 @@ function formex_nameform($form, &$form_state) {
   );
 
   $form['color'] = array(
+    '#prefix' => '<hr>',
     '#type' => 'fieldset',
     '#title' => t('Color'),
     '#description' => t('This fieldset contains Color field.'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
+    '#suffix' => '<div class="privacy-warning">' .
+      t('This information will be displayed publicly!') . '</div>',
   );
 
   $form['color_options'] = array(
