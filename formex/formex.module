@@ -80,6 +80,13 @@ function formex_nameform($form, &$form_state) {
     '#element_validate' => array('formex_flavor_validate'),
   );
 
+  if (!empty($form_state['formex_prv']['robot'])) {
+    $form['flavor2'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Please prove that you are not robot and repate Flavor.',
+    );
+  }
+
   $form['name_submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
@@ -268,6 +275,12 @@ function formex_flavor_validate($element, &$form_state, $form) {
   // dpm($element);
   // dpm($form_state);
   // dpm($form);
+
+  if ($form_state['values']['flavor'] == 'robot') {
+    $form_state['formex_prv']['robot'] = TRUE;
+    $form_state['rebuild'] = TRUE;
+    return;
+  }
 
   if (!in_array($form_state['values']['flavor'], $element['#allowed_flavors'])) {
     form_error($element, t('You must enter spicy or sweet.'));
