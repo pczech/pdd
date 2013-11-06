@@ -66,6 +66,12 @@ function formex_nameform($form, &$form_state) {
     '#options' => $form['color_options']['#value'],
   );
 
+  // Placeholder for a value added during form validation.
+  $form['result'] = array(
+    '#type' => 'value',
+    '#value' => array(),
+  );
+
   $form['name_submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
@@ -223,6 +229,14 @@ function formex_special_validate($form, &$form_state) {
   _formex_trace(__FUNCTION__);
   // dpm($form);
   // dpm($form_state);
+
+  $result = 'RESULT';
+  form_set_value($form['result'], $result, $form_state);
+  // Alternative way to store a value in the form:
+  $form_state['formex_prv']['result'] = $result;
+
+  // dpm($form);
+  // dpm($form_state);
 }
 
 
@@ -233,6 +247,8 @@ function formex_special_submit($form, &$form_state) {
   _formex_trace(__FUNCTION__);
   // dpm($form);
   // dpm($form_state);
+  drupal_set_message('drupal_set_form: ' . $form_state['values']['result']);
+  drupal_set_message('$form_state: ' . $form_state['formex_prv']['result']);
 }
 
 
