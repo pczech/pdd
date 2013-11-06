@@ -12,8 +12,10 @@
  *
  */
 
+$mark = basename(__FILE__);
+dpm($mark);
+dpm($variables);
 print '<div id="formex_nameform">';
-print 'DUPA';
 print $variables['formex_nameform']['color'];
 print $variables['formex_nameform']['name'];
 print $variables['formex_nameform']['submit'];
