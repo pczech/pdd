@@ -49,8 +49,8 @@ function formex_nameform($form, &$form_state) {
     '#description' => t('This fieldset contains Color field.'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-    '#suffix' => '<div class="privacy-warning">' .
-      t('This information will be displayed publicly!') . '</div>',
+    '#suffix' => '<div class="privacy-warning">'
+    . t('This information will be displayed publicly!') . '</div>',
   );
 
   $form['color_options'] = array(
@@ -100,8 +100,8 @@ function formex_nameform_validate($form, &$form_state) {
  */
 function formex_nameform_submit($form, &$form_state) {
   _formex_trace(__FUNCTION__);
-  dpm($form);
-  dpm($form_state);
+  // dpm($form);
+  // dpm($form_state);
 
   $name = $form_state['values']['user_name'];
   $color_key = $form_state['values']['favorite_color'];
@@ -122,36 +122,63 @@ function formex_nameform_submit($form, &$form_state) {
  */
 function formex_theme($existing, $type, $theme, $path) {
   _formex_trace(__FUNCTION__);
+
   return array(
     'formex_nameform' => array(
       'render element' => 'ex_form',
       'template' => 'formex-nameform',
-    )
+    ),
   );
 }
 
 
 /**
-* Assign the elements of the form to variables so the themer can use those
-* values to control how the form elements are displayed, or alternatively
-* displaying the whole form as constructed above.
-*
-* If the theme implementation is a template file, several functions are called
-* before the template file is invoked, to modify the $variables array. These
-* fall into the "preprocessing" phase and the "processing" phase.
-* template_preprocess_HOOK, HOOK is name of the theme hook registered by
-* hook_theme().
-*/
+ * Assign the elements of the form to variables.
+ *
+ * Assign the elements of the form to variables so the themer can use those
+ * values to control how the form elements are displayed, or alternatively
+ * displaying the whole form as constructed above.
+ *
+ * If the theme implementation is a template file, several functions are called
+ * before the template file is invoked, to modify the $variables array. These
+ * fall into the "preprocessing" phase and the "processing" phase.
+ * template_preprocess_HOOK, HOOK is name of the theme hook registered by
+ * hook_theme().
+ */
 function template_preprocess_formex_nameform(&$variables) {
   _formex_trace(__FUNCTION__);
-  dpm($variables);
+  // dpm($variables);
+
+  $hidden = array();
+  $variables['formex_nameform'] = array();
+
+  foreach (element_children($variables['ex_form']) as $key) {
+    $type = $variables['ex_form'][$key]['#type'];
+    if ($type == 'hidden' || $type == 'token') {
+      // The form elements are rendered using their standard themes.
+      $hidden[] = drupal_render($variables['ex_form'][$key]);
+    }
+    else {
+      // The form elements are rendered using their standard themes.
+      $variables['formex_nameform'][$key] = drupal_render($variables['ex_form'][$key]);
+    }
+  }
+
+  // Hidden form elements have no value to themers. No need for separation.
+  $variables['formex_nameform']['hidden'] = implode($hidden);
+
+  // Collect all form elements to make it easier to print the whole form.
+  $variables['formex_nameform_form'] = implode($variables['formex_nameform']);
+
+  // dpm($variables);
 }
 
 
 /**
- * Module's theme function. default name is theme_HOOK. It is called if
- * 'template' is not specified in theme registration in hook_theme.
- * @param unknown_type $variables
+ * Module's theme function.
+ *
+ * Default name is theme_HOOK. It is called if 'template' is not specified
+ * in theme registration in hook_theme.
  */
 function theme_formex_nameform($variables) {
   _formex_trace(__FUNCTION__);

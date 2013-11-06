@@ -12,13 +12,17 @@
  *
  */
 
-$mark = basename(__FILE__);
-dpm($mark);
-dpm($variables);
+_formex_trace(basename(__FILE__));
+// dpm($variables);
+
 print '<div id="formex_nameform">';
+// For example, the order of elements can be changed:
+print $variables['formex_nameform']['name_submit'];
 print $variables['formex_nameform']['color'];
 print $variables['formex_nameform']['name'];
-print $variables['formex_nameform']['submit'];
 print $variables['formex_nameform']['hidden'];
+
+// Print the whole form.
+// print $variables['formex_nameform_form'];
 print '</div>';
 
