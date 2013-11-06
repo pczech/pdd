@@ -72,6 +72,14 @@ function formex_nameform($form, &$form_state) {
     '#value' => array(),
   );
 
+  $form['flavor'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Flavor',
+    // Store the allowed choices in the form definition.
+    '#allowed_flavors' => array(t('spicy'), t('sweet')),
+    '#element_validate' => array('formex_flavor_validate'),
+  );
+
   $form['name_submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
@@ -249,6 +257,21 @@ function formex_special_submit($form, &$form_state) {
   // dpm($form_state);
   drupal_set_message('drupal_set_form: ' . $form_state['values']['result']);
   drupal_set_message('$form_state: ' . $form_state['formex_prv']['result']);
+}
+
+
+/**
+ * Validatation function for 'flavor' element of the form
+ */
+function formex_flavor_validate($element, &$form_state, $form) {
+  _formex_trace(__FUNCTION__);
+  // dpm($element);
+  // dpm($form_state);
+  // dpm($form);
+
+  if (!in_array($form_state['values']['flavor'], $element['#allowed_flavors'])) {
+    form_error($element, t('You must enter spicy or sweet.'));
+  }
 }
 
 
