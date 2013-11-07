@@ -21,7 +21,9 @@ print $variables['formex_nameform']['name_submit'];
 print $variables['formex_nameform']['color'];
 print $variables['formex_nameform']['name'];
 print $variables['formex_nameform']['flavor'];
-print $variables['formex_nameform']['flavor2'];
+if (!empty($variables['formex_nameform']['flavor2'])) {
+  print $variables['formex_nameform']['flavor2'];
+}
 print $variables['formex_nameform']['hidden'];
 
 // Print the whole form.
