@@ -190,3 +190,4 @@ field_data_field_color
 element_children
 hook_forms
 in_array
+drupal_form_submit
