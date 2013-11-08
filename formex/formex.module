@@ -290,6 +290,51 @@ function formex_flavor_validate($element, &$form_state, $form) {
 
 
 /**
+ * Implements hook_form_alter().
+ */
+function formex_form_alter(&$form, &$form_state, $form_id) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+  // dpm($form_id);
+
+  // This code gets called for every form Drupal builds; use an if statement
+  // to respond only to the user login block and user login forms.
+  if ($form_id != 'user_login_block' && $form_id != 'user_login') {
+    return;
+  }
+
+  // Add a dire warning to the top of the login form.
+  $form['warning'] = array(
+    // There is no need to declare a form element as #type = 'markup',
+    // as this is the default type.
+    '#type' => 'markup',
+    '#markup' => t('We log all login attempts!'),
+    '#weight' => -5,
+  );
+
+  // Change 'Log in' to 'Sign in'.
+  $form['actions']['submit']['#value'] = t('Sign in');
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function formex_form_user_login_alter(&$form, &$form_state, $form_id) {
+  _formex_trace(__FUNCTION__);
+
+  // This hook is called after generic hook_form_alter().
+  $form['warning'] = array(
+    '#markup' => t('All log attempts will be registered!'),
+    '#weight' => -5
+  );
+  // Change 'Log in' to 'Sign in'.
+  $form['actions']['submit']['#value'] = t('Sign in');
+}
+
+
+/**
  * Traces module functions' calls.
  */
 function _formex_trace($mark) {

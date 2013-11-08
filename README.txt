@@ -20,6 +20,7 @@ hook_field_widget_info
 hook_field_widget_form
 hook_form
 hook_form_alter
+hook_FORM_ID_alter
 hook_form_system_theme_settings_alter
 hook_load
 hook_menu
