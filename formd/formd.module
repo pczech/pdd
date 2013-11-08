@@ -5,3 +5,64 @@
  * An example of how to use the new #states Form API element, allowing
  * dynamic form behavior with very simple setup.
  */
+
+
+/**
+ * Implements hook_menu().
+ */
+function formd_menu() {
+  _formd_trace(__FUNCTION__);
+
+  $items = array();
+
+  $items['dynamic_form'] = array(
+    'title' => t('Dynamic Form'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('formd_example'),
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Creates a dynamic form.
+ */
+function formd_example($form, &$form_state) {
+  _formd_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  $form['room_types'] = array(
+    '#type' => 'radios',
+    '#title' => t('What type of room do you require?'),
+    '#options' => drupal_map_assoc(
+      array(
+        t('Study Room'),
+        t('Small Conference Room'),
+        t('Board Room'),
+      )
+    ),
+  );
+
+  $form['study_room'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Study Room Details'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="room_types"]' => array('value' => t('Study Room')),
+      ),
+    ),
+  );
+
+  return $form;
+}
+
+
+/**
+ * Traces module's functions calls.
+ */
+function _formd_trace($mark) {
+  dpm($mark);
+}
