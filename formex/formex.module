@@ -268,14 +268,14 @@ function formex_special_submit($form, &$form_state) {
   _formex_trace(__FUNCTION__);
   // dpm($form);
   // dpm($form_state);
-  drupal_set_message('drupal_set_form: ' . $form_state['values']['result']);
-  drupal_set_message('$form_state: ' . $form_state['formex_prv']['result']);
+  drupal_set_message(check_plain('drupal_set_form: ' . $form_state['values']['result']));
+  drupal_set_message(check_plain('$form_state: ' . $form_state['formex_prv']['result']));
   $form_state['redirect'] = 'node/5';
 }
 
 
 /**
- * Validatation function for 'flavor' element of the form
+ * Validatation function for 'flavor' element of the form.
  */
 function formex_flavor_validate($element, &$form_state, $form) {
   _formex_trace(__FUNCTION__);
@@ -333,12 +333,11 @@ function formex_form_user_login_alter(&$form, &$form_state, $form_id) {
   // This hook is called after generic hook_form_alter().
   $form['warning'] = array(
     '#markup' => t('All log attempts will be registered!'),
-    '#weight' => -5
+    '#weight' => -5,
   );
   // Change 'Log in' to 'Sign in'.
   $form['actions']['submit']['#value'] = t('Sign in');
 }
-
 
 
 /**

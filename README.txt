@@ -22,6 +22,7 @@ hook_form
 hook_form_alter
 hook_FORM_ID_alter
 hook_form_system_theme_settings_alter
+hook_forms
 hook_load
 hook_menu
 hook_menu_alter
@@ -118,6 +119,7 @@ Generic
 -------
 drupal_add_css
 drupal_anonymous_user
+drupal_form_submit
 drupal_get_form
 drupal_get_path
 drupal_goto
@@ -126,6 +128,7 @@ drupal_set_message
 drupal_strtolower
 drupal_substr
 drupal_write_record
+element_children
 get_t
 l
 t
@@ -183,11 +186,3 @@ users
 field_data_annotate
 field_data_job_post_company
 field_data_field_color
-
-
-
-//////////////
-element_children
-hook_forms
-in_array
-drupal_form_submit
