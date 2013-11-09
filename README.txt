@@ -123,6 +123,7 @@ drupal_form_submit
 drupal_get_form
 drupal_get_path
 drupal_goto
+drupal_map_assoc
 drupal_set_title
 drupal_set_message
 drupal_strtolower
@@ -161,6 +162,7 @@ strlen
 substr
 trim
 unset
+var_export
 
 
 Database tables
