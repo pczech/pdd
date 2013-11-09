@@ -1,0 +1,365 @@
+<?php
+
+/**
+ * @file
+ * Play with the Form API.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function formex_menu() {
+  $items = array();
+
+  $items['formex'] = array(
+    'title' => 'View the sample form',
+    'page callback' => 'drupal_get_form',
+    // The agrument for drupal_get_form is FORM_ID.
+    'page arguments' => array('formex_special'),
+    'access callback' => TRUE,
+  );
+
+  $items['formex_s'] = array(
+    'title' => 'drupal_form_submit',
+    'page callback' => '_formex_drupal_form_submit',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Creates form 'nameform'.
+ */
+function formex_nameform($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  $form['name'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Your name'),
+    '#description' => t('What people call you.'),
+  );
+
+  $form['name']['user_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your name'),
+    '#description' => t('Please enter your name.'),
+  );
+
+  $form['color'] = array(
+    '#prefix' => '<hr>',
+    '#type' => 'fieldset',
+    '#title' => t('Color'),
+    '#description' => t('This fieldset contains Color field.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#suffix' => '<div class="privacy-warning">'
+    . t('This information will be displayed publicly!') . '</div>',
+  );
+
+  $form['color_options'] = array(
+    '#type' => 'value',
+    '#value' => array(t('red'), t('green'), t('blue')),
+  );
+
+  $form['color']['favorite_color'] = array(
+    '#type' => 'select',
+    '#title' => t('Favorite Color'),
+    '#description' => t('Please select your favorite color.'),
+    '#options' => $form['color_options']['#value'],
+  );
+
+  // Placeholder for a value added during form validation.
+  $form['result'] = array(
+    '#type' => 'value',
+    '#value' => array(),
+  );
+
+  $form['flavor'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Flavor',
+    // Store the allowed choices in the form definition.
+    '#allowed_flavors' => array(t('spicy'), t('sweet')),
+    '#element_validate' => array('formex_flavor_validate'),
+  );
+
+  if (!empty($form_state['formex_prv']['robot'])) {
+    $form['flavor2'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Please prove that you are not robot and repate Flavor.',
+    );
+  }
+
+  $form['name_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+
+/**
+ * Form validation function FORM_ID_validate.
+ */
+function formex_nameform_validate($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  if ($form_state['values']['user_name'] == 'King Kong') {
+    // We notify the form API that this field has failed validation.
+    form_set_error('user_name',
+      t('King Kong is not allowed to use this form.'));
+  }
+}
+
+
+/**
+ * Form submision function FORM_ID_submit.
+ *
+ * Warning. The form processor flattens the form values, so the following
+ * access is valid:
+ * $form[values]['user_name'] (and not $form['values']['color']['user_name'])
+ * $form['values']['favorite_color']
+ */
+function formex_nameform_submit($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  $name = $form_state['values']['user_name'];
+  $color_key = $form_state['values']['favorite_color'];
+  $color = $form_state['values']['color_options'][$color_key];
+  drupal_set_message(t('%name loves the color %color!',
+    array('%name' => $name, '%color' => $color)));
+}
+
+
+/**
+ * Implements hook_theme().
+ *
+ * The hook is called on cache clear and registers module specific theme hooks.
+ * The hooks can be functions or templates. The theme hooks can be invoked by
+ * theme(HOOK, variables). If the theme hook name HOOK is the same like FORM_ID
+ * then it is called automatically, otherwise it shall be pointed in the form
+ * via '#theme' parameter.
+ */
+function formex_theme($existing, $type, $theme, $path) {
+  _formex_trace(__FUNCTION__);
+
+  return array(
+    'formex_nameform' => array(
+      'render element' => 'ex_form',
+      'template' => 'formex-nameform',
+    ),
+  );
+}
+
+
+/**
+ * Assign the elements of the form to variables.
+ *
+ * Assign the elements of the form to variables so the themer can use those
+ * values to control how the form elements are displayed, or alternatively
+ * displaying the whole form as constructed above.
+ *
+ * If the theme implementation is a template file, several functions are called
+ * before the template file is invoked, to modify the $variables array. These
+ * fall into the "preprocessing" phase and the "processing" phase.
+ * template_preprocess_HOOK, HOOK is name of the theme hook registered by
+ * hook_theme().
+ */
+function template_preprocess_formex_nameform(&$variables) {
+  _formex_trace(__FUNCTION__);
+  // dpm($variables);
+
+  $hidden = array();
+  $variables['formex_nameform'] = array();
+
+  foreach (element_children($variables['ex_form']) as $key) {
+    $type = $variables['ex_form'][$key]['#type'];
+    if ($type == 'hidden' || $type == 'token') {
+      // The form elements are rendered using their standard themes.
+      $hidden[] = drupal_render($variables['ex_form'][$key]);
+    }
+    else {
+      // The form elements are rendered using their standard themes.
+      $variables['formex_nameform'][$key] = drupal_render($variables['ex_form'][$key]);
+    }
+  }
+
+  // Hidden form elements have no value to themers. No need for separation.
+  $variables['formex_nameform']['hidden'] = implode($hidden);
+
+  // Collect all form elements to make it easier to print the whole form.
+  $variables['formex_nameform_form'] = implode($variables['formex_nameform']);
+
+  // dpm($variables);
+}
+
+
+/**
+ * Module's theme function.
+ *
+ * Default name is theme_HOOK. It is called if 'template' is not specified
+ * in theme registration in hook_theme.
+ */
+function theme_formex_nameform($variables) {
+  _formex_trace(__FUNCTION__);
+  // dpm($variables);
+  return 'Content generated by theme function';
+}
+
+
+/**
+ * Implements hook_forms().
+ *
+ * By default, when drupal_get_form() is called, the system will look for a
+ * function with the same name as the form ID, and use that function to build
+ * the form. If no such function is found, Drupal calls this hook.
+ *
+ * Now, if we call drupal_get_form('formexample_special'), Drupal will first
+ * check for a function named formexample_special() that defines the form.
+ * If it cannot find this function, hook_forms() will be called, and Drupal
+ * will see that we have mapped the form ID formexample_special to
+ * formexample_nameform. Drupal will call formexample_nameform() to get the
+ * form definition, and then attempt to call formexample_special_validate()
+ * and formexample_special_submit() for validation and submission,
+ * respectively.
+ */
+function formex_forms($form_id, $args) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form_id);
+  // dpm($args);
+
+  $forms['formex_special'] = array(
+    'callback' => 'formex_nameform',
+  );
+  return $forms;
+}
+
+
+/**
+ * Form validation function.
+ */
+function formex_special_validate($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+
+  $result = 'RESULT';
+  form_set_value($form['result'], $result, $form_state);
+  // Alternative way to store a value in the form:
+  $form_state['formex_prv']['result'] = $result;
+
+  // dpm($form);
+  // dpm($form_state);
+}
+
+
+/**
+ * Form submision function.
+ */
+function formex_special_submit($form, &$form_state) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+  drupal_set_message(check_plain('drupal_set_form: ' . $form_state['values']['result']));
+  drupal_set_message(check_plain('$form_state: ' . $form_state['formex_prv']['result']));
+  $form_state['redirect'] = 'node/5';
+}
+
+
+/**
+ * Validatation function for 'flavor' element of the form.
+ */
+function formex_flavor_validate($element, &$form_state, $form) {
+  _formex_trace(__FUNCTION__);
+  // dpm($element);
+  // dpm($form_state);
+  // dpm($form);
+
+  if ($form_state['values']['flavor'] == 'robot') {
+    $form_state['formex_prv']['robot'] = TRUE;
+    $form_state['rebuild'] = TRUE;
+    return;
+  }
+
+  if (!in_array($form_state['values']['flavor'], $element['#allowed_flavors'])) {
+    form_error($element, t('You must enter spicy or sweet.'));
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function formex_form_alter(&$form, &$form_state, $form_id) {
+  _formex_trace(__FUNCTION__);
+  // dpm($form);
+  // dpm($form_state);
+  // dpm($form_id);
+
+  // This code gets called for every form Drupal builds; use an if statement
+  // to respond only to the user login block and user login forms.
+  if ($form_id != 'user_login_block' && $form_id != 'user_login') {
+    return;
+  }
+
+  // Add a dire warning to the top of the login form.
+  $form['warning'] = array(
+    // There is no need to declare a form element as #type = 'markup',
+    // as this is the default type.
+    '#type' => 'markup',
+    '#markup' => t('We log all login attempts!'),
+    '#weight' => -5,
+  );
+
+  // Change 'Log in' to 'Sign in'.
+  $form['actions']['submit']['#value'] = t('Sign in');
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function formex_form_user_login_alter(&$form, &$form_state, $form_id) {
+  _formex_trace(__FUNCTION__);
+
+  // This hook is called after generic hook_form_alter().
+  $form['warning'] = array(
+    '#markup' => t('All log attempts will be registered!'),
+    '#weight' => -5,
+  );
+  // Change 'Log in' to 'Sign in'.
+  $form['actions']['submit']['#value'] = t('Sign in');
+}
+
+
+/**
+ * Tests drupal_form_submit().
+ *
+ * ????
+ */
+function _formex_drupal_form_submit() {
+  _formex_trace(__FUNCTION__);
+  $form_state['values'] = array(
+    'user_name' => t('Marvin'),
+    'favorite_color' => 0,
+    'flavor' => 'spicy',
+  );
+
+  drupal_form_submit('formex_nameform', $form_state);
+}
+
+
+/**
+ * Traces module functions' calls.
+ */
+function _formex_trace($mark) {
+  dpm($mark);
+}
