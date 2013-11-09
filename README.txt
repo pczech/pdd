@@ -120,6 +120,7 @@ drupal_anonymous_user
 drupal_get_form
 drupal_get_path
 drupal_goto
+drupal_map_assoc
 drupal_set_title
 drupal_strtolower
 drupal_substr
@@ -156,6 +157,7 @@ strlen
 substr
 trim
 unset
+var_export
 
 
 Database tables
@@ -181,9 +183,3 @@ users
 field_data_annotate
 field_data_job_post_company
 field_data_field_color
-
-
-formd
-/////////
-drupal_map_assoc
-var_export
