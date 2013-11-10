@@ -155,6 +155,7 @@ is_object
 isset
 intval
 in_array
+key
 preg_match
 preg_match_all
 session_destroy

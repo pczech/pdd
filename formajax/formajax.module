@@ -1,0 +1,124 @@
+<?php
+
+/**
+ * @file
+ * An example of how to use AJAX in Forms
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function formajax_menu() {
+  $items = array();
+
+  $items['cars'] = array(
+    'title' => 'Form AJAX',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('formajax_cars'),
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Defines Cars form.
+ */
+function formajax_cars($form, &$form_state) {
+  _formajax_trace(__FUNCTION__);
+  dpm($form);
+  dpm($form_state);
+
+  $manufacturers = _formajax_get_manufacturers();
+
+  // The function is called on ajax response too, then get choosen
+  // manufacturer from $form_state['values']. By default get first
+  // manufacturer of the list (by key($manufacturers)).
+  $manufacturer = isset($form_state['values']['manufacturer']) ?
+    $form_state['values']['manufacturer'] : key($manufacturers);
+
+  $form['manufacturer'] = array(
+    '#type' => 'select',
+    '#title' => t('Manufacturer'),
+    '#options' => $manufacturers,
+    '#default_value' => $manufacturer,
+    '#ajax' => array(
+      'callback' => 'formajax_manufacturer_callback',
+      'wrapper' => 'model_replace',
+    ),
+  );
+
+  $form['model'] = array(
+    '#type' => 'select',
+    '#title' => 'Model',
+    '#prefix' => '<div id="model_replace">',
+    '#suffix' => '</div>',
+    '#options' => _formajax_get_models($manufacturer),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+/**
+ * AJAX Callback function.
+ */
+function formajax_manufacturer_callback($form, &$form_state) {
+  _formajax_trace(__FUNCTION__);
+  dpm($form);
+  dpm($form_state);
+
+  // Return renderable array which replace form element with id=model_replace
+  return $form['model'];
+}
+
+
+/**
+ * Helper function to populate manufacturers dropdown.
+ */
+function _formajax_get_manufacturers() {
+  return drupal_map_assoc(
+    array(
+      t('Honda'),
+      t('Toyota'),
+      t('Ford'),
+      t('Volksvagen'),
+    )
+  );
+}
+
+
+/**
+ * Helper function to populate car model dropdown.
+ */
+function _formajax_get_models($manufacturer = '') {
+  $models = array(
+    t('Honda') => drupal_map_assoc(array(
+      t('Accord'), t('Civic'), t('CRX'), t('Pilot'))),
+    t('Toyota') => drupal_map_assoc(array(
+      t('Camry'), t('Yaris'), t('Tundra'), t('Tacoma'))),
+    t('Ford') => drupal_map_assoc(array(
+      t('F-150'), t('Explorer'), t('Escape'), t('Edge'))),
+    t('Volksvagen') => drupal_map_assoc(array(
+      t('GTI'), t('Passat'), t('Jeta'), t('Polo'))),
+  );
+
+  if (isset($models[$manufacturer])) {
+    return $models[$manufacturer];
+  }
+
+  return array();
+}
+
+
+/**
+ * Traces module's functions' calls.
+ */
+function _formajax_trace($mark) {
+  dpm($mark);
+}

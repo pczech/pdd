@@ -1,0 +1,4 @@
+name = Form AJAX
+description = Example of a form using AJAX
+package = Pro Drupal Development
+core = 7.x
