@@ -1,0 +1,114 @@
+<?php
+
+/**
+ * @file
+ * A silly module to assist whizbang novelists who are in a rut by providing a
+ * random sentence generator for their posts.
+ */
+
+/**
+ * Implements hook_filter_info().
+ */
+function creativejuice_filter_info() {
+  _creativejuice_trace(__FUNCTION__);
+
+  $filters = array();
+
+  $filters['creativejuice'] = array(
+    'title' => t('Creative Juice filter'),
+    'description' => t('Enables users to insert random sentences into their post.'),
+    'process callback' => '_creativejuice_filter_process',
+    'tips callback' => '_creativejuice_filter_tips',
+  );
+
+  return $filters;
+}
+
+/**
+ * Filter process function.
+ */
+function _creativejuice_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+  _creativejuice_trace(__FUNCTION__);
+  // dpm($text);
+  // dpm($filter);
+  // dpm($format);
+  // dpm($langcode);
+  // dpm($cache);
+  // dpm($cache_id);
+
+  while (strpos($text, '[juice]') !== FALSE) {
+    $sentence = _creativejuice_sentence();
+    $text = preg_replace('&\[juice\]&', $sentence, $text, 1);
+  }
+
+  return $text;
+}
+
+
+/**
+ * Filter tips function.
+ */
+function _creativejuice_filter_tips($filter, $format, $long) {
+  _creativejuice_trace(__FUNCTION__);
+  // dpm($filter);
+  // dpm($format);
+  // dpm($long);
+
+  return t('<em>[juice]</em> is replaced with the random sentences.');
+}
+
+
+/**
+ * Helper function generating a random sentence.
+ */
+function _creativejuice_sentence() {
+  $beginnings = array();
+  $beginnings[] = t('A majority of us believe');
+  $beginnings[] = t('Generally speaking,');
+  $beginnings[] = t('As times carry on');
+  $beginnings[] = t('Barren in intellect,');
+  $beginnings[] = t('Deficient in insight,');
+  $beginnings[] = t('As blazing blue sky pours down torrents of light,');
+  $beginnings[] = t('Aloof from the motley throng,');
+  $beginnings[] = t('While crafting a new Drupal module,');
+
+  $middles = array();
+  $middles[] = t('life flowed in its accustomed stream');
+  $middles[] = t('he ransacked the vocabulary');
+  $middles[] = t('the grimaces and caperings of buffoonery sting');
+  $middles[] = t('the mind freezes at the thought');
+  $middles[] = t('reverting to another matter enables freedom');
+  $middles[] = t('he lived as modestly as a hermit');
+  $middles[] = t('the coder repeatedly invoked hooks');
+
+  $ends = array();
+  $ends[] = t('through the red tape of officialdom.');
+  $ends[] = t('as it set anew in some fresh and appealing form.');
+  $ends[] = t('supported by evidence.');
+  $ends[] = t('as fatal as the fang of the most venomous snake.');
+  $ends[] = t('as full of spirit as a gray squirrel.');
+  $ends[] = t('as dumb as a fish.');
+  $ends[] = t('like a damp-handed auctioneer.');
+  $ends[] = t('like a bald ferret.');
+  $ends[] = t('with a frozen, sharpened badger.');
+  $ends[] = t('and achieve CMS nirvanna.');
+
+  // For every phrase group, pick a random value.
+  $sentence = array(
+    $beginnings[mt_rand(0, count($beginnings) - 1)],
+    $middles[mt_rand(0, count($middles) - 1)],
+    $ends[mt_rand(0, count($ends) - 1)],
+  );
+
+  // Take the three random values from the sentence groups,
+  // implode them together, and return the sentence.
+  return implode(' ', $sentence);
+}
+
+
+/**
+ * Traces module's functions' calls.
+ */
+function _creativejuice_trace($mark) {
+  dpm($mark);
+}

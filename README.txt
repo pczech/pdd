@@ -18,6 +18,7 @@ hook_field_schema
 hook_field_validate
 hook_field_widget_info
 hook_field_widget_form
+hook_filter_info
 hook_form
 hook_form_alter
 hook_FORM_ID_alter
@@ -145,6 +146,7 @@ watchdog
 PHP
 ---
 array_shift
+count
 empty
 explode
 hexdec
@@ -156,10 +158,13 @@ isset
 intval
 in_array
 key
+mt_rand
 preg_match
 preg_match_all
+preg_replace
 session_destroy
 strlen
+strpos
 substr
 trim
 unset
@@ -174,6 +179,7 @@ block
 block_custom
 block_node_type
 block_role
+cache_filter
 comment
 field_config
 field_config_instance
