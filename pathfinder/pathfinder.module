@@ -64,7 +64,13 @@ function pathfinder_search_access() {
  */
 function pathfinder_node_update_index($node) {
   _pathfinder_trace();
-  dpm($node);
+  // dpm($node);
+
+  $uid = db_query('SELECT name FROM {users} WHERE uid = :uid',
+    array(':uid' => $node->uid))->fetchField();
+
+  // dpm($uid);
+  return $uid;
 }
 
 
