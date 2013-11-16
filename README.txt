@@ -203,4 +203,6 @@ pathfinder
 hook_search_info
 hook_search_access
 hook_search_execute
+hook_node_update_index
 debug_backtrace
+url
