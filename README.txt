@@ -49,6 +49,7 @@ hook_search_info
 hook_theme
 hook_trigger_info
 hook_update
+hook_update_index
 hook_user_insert
 hook_user_login
 hook_user_view
@@ -139,6 +140,8 @@ get_t
 l
 t
 module_invoke_all
+search_index
+search_excerpt
 variable_set
 variable_get
 variable_del
@@ -194,6 +197,7 @@ menu_links
 node
 node_type
 node_access
+search_index
 variable
 url_alias
 users
