@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * A module that emails a person when taxonomy changes.
+ */
+
+include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
+
+/**
+ * Implements hook_taxonomy_term_insert().
+ */
+function taxomon_taxonomy_term_insert($term) {
+  pdd_trace_funct();
+  dpm($term);
+}
+
+
+/**
+ * Implements hook_taxonomy_term_update().
+ */
+function taxomon_taxonomy_term_update($term) {
+  pdd_trace_funct();
+  dpm($term);
+}
+
+
+/**
+ * Implements hook_taxonomy_term_delete().
+ */
+function taxomon_taxonomy_term_delete($term) {
+  pdd_trace_funct();
+  dpm($term);
+}
+
+
+/**
+ * Implements hook_taxonomy_vocabulary_insert().
+ */
+function taxomon_taxonomy_vocabulary_insert($vocabulary) {
+  pdd_trace_funct();
+  dpm($vocabulary);
+}
+
+
+/**
+ * Implements hook_taxonomy_vocabulary_update().
+ */
+function taxomon_taxonomy_vocabulary_update($vocabulary) {
+  pdd_trace_funct();
+  dpm($vocabulary);
+}
+
+
+/**
+ * Implements hook_taxonomy_vocabulary_delete().
+ */
+function taxomon_taxonomy_vocabulary_delete($vocabulary) {
+  pdd_trace_funct();
+  dpm($vocabulary);
+}
+
+
+/**
+ * Log changes to taxonomy using watchdog and email.
+ */
+function _taxonom_send_notification($type, $action, $name) {
+  // Send email here.
+}

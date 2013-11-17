@@ -46,6 +46,12 @@ hook_schema_alter
 hook_search_access
 hook_search_execute
 hook_search_info
+hook_taxonomy_term_insert
+hook_taxonomy_term_update
+hook_taxonomy_term_delete
+hook_taxonomy_vocabulary_insert
+hook_taxonomy_vocabulary_update
+hook_taxonomy_vocabulary_delete
 hook_theme
 hook_trigger_info
 hook_update
