@@ -62,6 +62,33 @@ function taxomon_taxonomy_vocabulary_delete($vocabulary) {
 
 
 /**
+ * Implements hook_menu().
+ */
+function taxomon_menu() {
+  pdd_trace_funct();
+
+  $items = array();
+  $items['nodeterm'] = array(
+    'title' => 'Node terms',
+    'access callback' => TRUE,
+    'page callback' => 'taxomon_node_terms',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Displays taxonomy terms associated with a node
+ */
+function taxomon_node_terms($nid = NULL) {
+  pdd_trace_funct();
+  dpm($nid);
+  return t('Hello');
+}
+
+
+/**
  * Log changes to taxonomy using watchdog and email.
  */
 function _taxonom_send_notification($type, $action, $name) {
