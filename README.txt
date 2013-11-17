@@ -34,6 +34,7 @@ hook_node_info
 hook_node_insert
 hook_node_load
 hook_node_update
+hook_node_update_index
 hook_node_view
 hook_permission
 hook_preprocess_HOOK
@@ -42,6 +43,9 @@ hook_query_alter
 hook_query_TAG_alter
 hook_schema
 hook_schema_alter
+hook_search_access
+hook_search_execute
+hook_search_info
 hook_theme
 hook_trigger_info
 hook_update
@@ -140,6 +144,7 @@ variable_get
 variable_del
 theme
 theme_get_setting
+url
 watchdog
 
 
@@ -147,6 +152,7 @@ PHP
 ---
 array_shift
 count
+debug_backtrace
 empty
 explode
 hexdec
@@ -189,6 +195,7 @@ node
 node_type
 node_access
 variable
+url_alias
 users
 
 

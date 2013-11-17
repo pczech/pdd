@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Search interface for URL aliases.
+ */
+
+/**
+ * Implements hook_search_info().
+ *
+ * If the tab is not showing up, go to admin/config/search/settings and make
+ * sure the checkbox for your module is checked and clean cache up.
+ */
+function pathfinder_search_info() {
+  _pathfinder_trace();
+
+  return array(
+    'title' => 'URL Aliasys',
+    'path' => 'alias',
+  );
+}
+
+
+/**
+ * Implements hook_search_execute().
+ */
+function pathfinder_search_execute($keys = NULL, $conditions = NULL) {
+  _pathfinder_trace();
+  // dpm($keys);
+  // dpm($conditions);
+
+  $query = db_select('url_alias', 'u')->extend('PagerDefault');
+  $query
+    ->fields('u', array('source', 'alias'))
+    ->condition('alias', '%' . db_like($keys) . '%', 'LIKE')
+    ->limit(1);
+
+  $result = $query->execute();
+
+  $aliasys = array();
+  foreach ($result as $row) {
+    $aliasys[] = array(
+      'link' => url($row->source, array('absolute' => TRUE)),
+      'title' => $row->alias,
+    );
+  }
+
+  return $aliasys;
+}
+
+
+/**
+ * Implements hook_search_access().
+ */
+function pathfinder_search_access() {
+  _pathfinder_trace();
+
+  return user_access('administer url aliases');
+}
+
+
+/**
+ * Implements hook_node_update_index().
+ */
+function pathfinder_node_update_index($node) {
+  _pathfinder_trace();
+  // dpm($node);
+
+  $uid = db_query('SELECT name FROM {users} WHERE uid = :uid',
+    array(':uid' => $node->uid))->fetchField();
+
+  // dpm($uid);
+  return $uid;
+}
+
+
+/**
+ * Traces function calls.
+ */
+function _pathfinder_trace() {
+  $trace = debug_backtrace();
+  if (isset($trace[1])) {
+    dpm($trace[1]['function']);
+  }
+}
