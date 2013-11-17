@@ -5,3 +5,78 @@
  * Enables searching of non-Drupal content.
  */
 
+include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
+
+
+/**
+ * Implements hook_search_info().
+ */
+function legacysearch_search_info() {
+  pdd_trace_funct();
+
+  return array(
+    'title' => 'Tech Notes',
+    'path' => 'technote',
+  );
+}
+
+
+/**
+ * Implements hook_update_index().
+ */
+function legacysearch_update_index() {
+  pdd_trace_funct();
+
+  $result = db_query('SELECT id, title, note, last_modified FROM {technote}');
+
+  foreach ($result as $entry) {
+    $text = '<h1>' . check_plain($entry->title) . '</h1>' . $entry->note;
+    search_index($entry->id, 'legacysearch', $text);
+  }
+}
+
+
+/**
+ * Implements hook_search_execute().
+ */
+function legacysearch_search_execute($keys = NULL, $conditions = NULL) {
+  pdd_trace_funct();
+
+  $query = db_select('search_index', 'i')
+    ->extend('SearchQuery')
+    ->extend('PagerDefault');
+
+  $query->searchExpression($keys, 'legacysearch');
+
+  // If there weren't any results then return a blank result set.
+  if (!$query->executeFirstPass()) {
+    return array();
+  }
+
+  // If the first pass did return at least one record then execute the search.
+  $found = $query
+  ->limit(10)
+  ->execute();
+
+  $results = array();
+  foreach ($found as $item) {
+    $note = db_query('SELECT * FROM {technote} WHERE id=:sid',
+      array(':sid' => $item->sid))->fetchObject();
+
+    // dpm($item);
+    // dpm($note);
+
+    $results[] = array(
+      'link' => url('http://example.com/technotes/', array(
+        'query' => array('id' => $item->sid),
+        'absolute' => TRUE,
+      )),
+      'title' => $note->title,
+      'type' => t('Note'),
+      'date' => $note->last_modified,
+      'snippet' => search_excerpt($keys, $note->note),
+    );
+  }
+
+  return $results;
+}

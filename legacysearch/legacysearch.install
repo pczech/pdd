@@ -4,3 +4,77 @@
  * @file
  * Install, uninstall hooks for legacysearch module.
  */
+
+include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
+
+
+/**
+ * Implements hook_schema().
+ *
+ * Defines a table simulating external data storage.
+ */
+function legacysearch_schema() {
+  pdd_trace_funct();
+
+  $schema['technote'] = array(
+    'description' => 'A database with some example records.',
+    'fields' => array(
+      'id' => array(
+        'description' => "The tech note's primary ID.",
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'title' => array(
+        'description' => "The tech note's title.",
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'note' => array(
+        'description' => 'Actual text of tech note.',
+        'type' => 'text',
+      ),
+      'last_modified' => array(
+        'description' => 'Unix timestamp of last modification.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+}
+
+
+/**
+ * Implements hook_install().
+ *
+ * Fills the technote table with data.
+ */
+function legacysearch_install() {
+  pdd_trace_funct();
+
+  $values = array(
+    array(
+      'id' => 1,
+      'title' => 'Web 1.0 Emulator',
+      'note' => '<p>This handy product lets you emulate the blink tag but in hardware...a perfect gift.</p>',
+      'last_modified' => 1172502517,
+    ),
+    array(
+      'id' => 2,
+      'title' => 'Squishy Debugger',
+      'note' => '<p>Fully functional debugger inside a squishy gel case. The embedded ARM processor heats up...</p>',
+      'last_modified' => 1172502517,
+    ),
+  );
+
+  $db_query = db_insert('technote')
+    ->fields(array('id', 'title', 'note', 'last_modified'));
+
+  foreach ($values as $record) {
+    $db_query->values($record);
+  }
+
+  $db_query->execute();
+}
