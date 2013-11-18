@@ -46,6 +46,12 @@ hook_schema_alter
 hook_search_access
 hook_search_execute
 hook_search_info
+hook_taxonomy_term_insert
+hook_taxonomy_term_update
+hook_taxonomy_term_delete
+hook_taxonomy_vocabulary_insert
+hook_taxonomy_vocabulary_update
+hook_taxonomy_vocabulary_delete
 hook_theme
 hook_trigger_info
 hook_update
@@ -79,10 +85,12 @@ field_info_instance
 field_info_instances
 field_purge_batch
 field_update_instance
+field_view_field
 
 
 Node API
 --------
+node_load
 node_types_rebuild
 node_type_delete
 node_content_form
@@ -112,6 +120,10 @@ db_select
 db_set_active
 db_update
 
+Taxonomy API
+------------
+taxonomy_select_nodes
+
 
 actions
 -------
@@ -130,6 +142,7 @@ drupal_get_form
 drupal_get_path
 drupal_goto
 drupal_map_assoc
+drupal_render
 drupal_set_title
 drupal_set_message
 drupal_strtolower
@@ -140,6 +153,7 @@ get_t
 l
 t
 module_invoke_all
+render
 search_index
 search_excerpt
 variable_set
