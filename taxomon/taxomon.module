@@ -73,30 +73,52 @@ function taxomon_menu() {
     'access callback' => TRUE,
     'page callback' => 'taxomon_node_terms',
   );
+  $items['selnodes'] = array(
+    'title' => 'Select nodes',
+    'access callback' => TRUE,
+    'page callback' => 'taxomon_select_nodes',
+  );
 
   return $items;
 }
 
 
 /**
- * Displays taxonomy terms associated with a node
+ * Displays taxonomy terms associated with a node.
  */
 function taxomon_node_terms($nid = NULL) {
   pdd_trace_funct();
 
-  if (empty($nid))
-  {
-    return t('Add Node Id to the URL. e.g. nodeterm/1');
+  if (empty($nid)) {
+    return t('Add Node Id to the URL, for example: nodeterm/1');
   }
 
   $node_obj = node_load($nid);
   $renderable_array = field_view_field('node', $node_obj, 'field_tags', array('default'));
   $rendered_element = render($renderable_array);
-   dpm($node_obj);
-   dpm($renderable_array);
-   dpm($rendered_element);
+
+  dpm($node_obj);
+  dpm($renderable_array);
+  dpm($rendered_element);
 
   return $rendered_element;
+}
+
+/**
+ * Displays nodes titles with given terms.
+ */
+function taxomon_select_nodes() {
+  pdd_trace_funct();
+
+  $tids = array(2, 3);
+  $nids = taxonomy_select_nodes($tids);
+  $titles = array();
+  foreach ($nids as $nid) {
+    $node = node_load($nid);
+    $titles[] = $node->title;
+  }
+
+  return implode('</br>', $titles);
 }
 
 

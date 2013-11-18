@@ -120,6 +120,10 @@ db_select
 db_set_active
 db_update
 
+Taxonomy API
+------------
+taxonomy_select_nodes
+
 
 actions
 -------
