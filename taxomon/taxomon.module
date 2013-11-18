@@ -83,8 +83,20 @@ function taxomon_menu() {
  */
 function taxomon_node_terms($nid = NULL) {
   pdd_trace_funct();
-  dpm($nid);
-  return t('Hello');
+
+  if (empty($nid))
+  {
+    return t('Add Node Id to the URL. e.g. nodeterm/1');
+  }
+
+  $node_obj = node_load($nid);
+  $renderable_array = field_view_field('node', $node_obj, 'field_tags', array('default'));
+  $rendered_element = render($renderable_array);
+   dpm($node_obj);
+   dpm($renderable_array);
+   dpm($rendered_element);
+
+  return $rendered_element;
 }
 
 
