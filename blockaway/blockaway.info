@@ -1,0 +1,4 @@
+name = Block-Away
+description = Uses jQuery to hide blocks until a button is clicked.
+package = Pro Drupal Development
+core = 7.x

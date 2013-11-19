@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Use this module to learn about jQuery.
+ */
+
+include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
+
+
+/**
+ * Implements hook_init().
+ */
+function blockaway_init() {
+  pdd_trace_funct();
+
+  drupal_add_js(drupal_get_path('module', 'blockaway') . '/blockaway.js');
+}
