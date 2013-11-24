@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * @file
+ * A simple +1 voting widget.
+ */
+
+include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function plusone_menu() {
+  pdd_trace_funct();
+
+  $items = array();
+  $items['plusone/vote'] = array(
+    'title' => 'Vote',
+    'page callback' => 'plusone_vote',
+    'access arguments' => array('rate content'),
+    'type' => 'MENU_SUGGESTED_ITEM',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function plusone_permission() {
+  pdd_trace_funct();
+
+  return array(
+    'rate content' => array(
+      'title' => t('Rate content'),
+    ),
+  );
+}
+
+
+/**
+ * Menu handler.
+ */
+function plusone_vote() {
+  pdd_trace_funct();
+  return __FUNCTION__;
+}
+
+
+/**
+ * Implements hook_node_view().
+ */
+function plusone_node_view($node, $view_mode, $langcode) {
+  pdd_trace_funct();
+  dpm($node);
+  dpm($view_mode);
+  dpm($langcode);
+}
