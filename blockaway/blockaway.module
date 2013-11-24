@@ -14,5 +14,42 @@ include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
 function blockaway_init() {
   pdd_trace_funct();
 
+  theme('blockaway_jquery');
+}
+
+
+/**
+ * Implements hook_theme().
+ *
+ * Register module theme implementation.
+ *
+ * The hook is called on cache clear and registers module specific theme hooks.
+ * The hooks can be functions or templates. The theme hooks can be invoked by
+ * theme(HOOK, variables).
+ *
+ * Function or template theme: parameter 'function' or 'template'.
+ * If 'function' parameter is specified, this will be the function name to
+ * invoke for this implementation. If neither 'template' nor 'function' is
+ * specified, a default function name will be assumed.
+ *
+ * Default name is theme_HOOK, so default function name here is:
+ * 'theme_blockaway_jquery'
+ */
+function blockaway_theme($existing, $type, $theme, $path) {
+  pdd_trace_funct();
+
+  return array(
+    'blockaway_jquery' => array(
+      'arguments' => array()
+    )
+  );
+}
+
+/**
+ * Theme implementation.
+ */
+function theme_blockaway_jquery($variables) {
+  pdd_trace_funct();
+
   drupal_add_js(drupal_get_path('module', 'blockaway') . '/blockaway.js');
 }
