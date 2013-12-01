@@ -15,7 +15,7 @@
  */
 
 // Add the javascipt and CSS files
-//drupal_add_js(drupal_get_path('module', 'plusone') .'/plusone.js');
+drupal_add_js(drupal_get_path('module', 'plusone') .'/plusone.js');
 drupal_add_css(drupal_get_path('module', 'plusone') .'/plusone.css');
 
 // Based on the attributes – display the appropriate label
