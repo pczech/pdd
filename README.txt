@@ -8,6 +8,7 @@ hook_block_info
 hook_block_save
 hook_block_view
 hook_delete
+hook_init
 hook_insert
 hook_install
 hook_field_formatter_info
@@ -136,6 +137,7 @@ MODULE_FUNCNAME_action_validate
 Generic
 -------
 drupal_add_css
+drupal_add_js
 drupal_anonymous_user
 drupal_form_submit
 drupal_get_form
