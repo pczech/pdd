@@ -219,30 +219,34 @@ function job_post_delete($node) {
 function _job_post_watchdog($node, $operation) {
   switch ($operation) {
     case 'insert':
-      $text = 'added';
+      $operation_text = 'added';
       break;
 
     case 'update':
-      $text = 'updated';
+      $operation_text = 'updated';
       break;
 
     case 'delete':
-      $text = 'deleted';
+      $operation_text = 'deleted';
       break;
 
     default:
-      $text = 'accessed';
+      $operation_text = 'accessed';
       break;
   }
 
-  $variables = array();
+
   $link = l(t('view'), 'node/' . $node->nid);
 
   // Log details of the job posting to watchdog.
-  watchdog('job post', 'A new job post titled "' . $node->title .
-    '" for company "' . $node->job_post_company['und'][0]['value'] .
-    '" was ' . $text . ' by UID ' . $node->uid, $variables,
-    WATCHDOG_NOTICE, $link);
+  $variables = array(
+    '@title' => $node->title,
+    '@company' => $node->job_post_company['und'][0]['value'],
+    '@operation' => $operation_text,
+    '@uid' => $node->uid,
+  );
+  watchdog('job_post', 'A new job post titled @title for company @company was
+    @operation by UID @uid', $variables, WATCHDOG_NOTICE, $link);
 }
 
 
