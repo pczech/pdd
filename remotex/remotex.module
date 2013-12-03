@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Demonstrates XML-RPC.
+ */
+
+include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function remotex_menu() {
+  pdd_trace_funct();
+
+  $items = array();
+
+  $items['remotex'] = array(
+    'title' => 'XML-RPC',
+    'page callback' => '_remotex_info',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['remotex/time'] = array(
+    'title' => 'Get time',
+    'page callback' => '_remotex_get_time',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 0,
+  );
+
+  $items['remotex/statename'] = array(
+    'title' => 'Get state name',
+    'page callback' => '_remotex_get_state_name',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 0,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Remotex main page callback.
+ */
+function _remotex_info() {
+  pdd_trace_funct();
+  return t('Select XML-RPC action from menu');
+}
+
+
+/**
+ * Get time via XML-RPC.
+ */
+function _remotex_get_time() {
+  pdd_trace_funct();
+
+  $time = xmlrpc('http://xmlrpc.scripting.com',
+    array('currentTime.getCurrentTime' => array()));
+
+  dpm($time);
+
+  return 'result: ';
+}
+
+
+/**
+ * Get time via XML-RPC.
+ */
+function _remotex_get_state_name($sid = 3) {
+  pdd_trace_funct();
+
+  $state_name = xmlrpc('http://betty.userland.com/RPC2',
+    array('examples.getStateName' => array((int) $sid)));
+
+  return "Response: $state_name";
+}

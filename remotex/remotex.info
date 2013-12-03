@@ -1,0 +1,4 @@
+name = Remotex
+description = Demonstrates XML-RPC Client and Server
+package = Pro Drupal Development
+core = 7.x

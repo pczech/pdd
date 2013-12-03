@@ -166,6 +166,7 @@ theme
 theme_get_setting
 url
 watchdog
+xmlrpc
 
 
 PHP
