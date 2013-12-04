@@ -7,6 +7,11 @@
 
 include_once DRUPAL_ROOT . '/sites/all/modules/pdd/include/tools.inc';
 
+
+/**
+ * XML-RPC Client
+ */
+
 /**
  * Implements hook_menu().
  */
@@ -38,6 +43,14 @@ function remotex_menu() {
     'weight' => 0,
   );
 
+  $items['remotex/error'] = array(
+    'title' => 'Error',
+    'page callback' => '_remotex_error',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 0,
+  );
+
   return $items;
 }
 
@@ -57,17 +70,26 @@ function _remotex_info() {
 function _remotex_get_time() {
   pdd_trace_funct();
 
-  $time = xmlrpc('http://xmlrpc.scripting.com',
+  $time = xmlrpc('http://drupal.org/RPC2',
     array('currentTime.getCurrentTime' => array()));
 
-  dpm($time);
+  if ($error = xmlrpc_error()) {
+    // dpm($error);
+    if ($error->code != 0) {
+      drupal_set_message(t('Could not get time because the remote site gave
+        an error: %message (@code).', array(
+          '%message' => $error->message,
+          '@code' => $error->code,
+        )));
+    }
+  }
 
-  return 'result: ';
+  return 'Done.';
 }
 
 
 /**
- * Get time via XML-RPC.
+ * Get a state name via XML-RPC.
  */
 function _remotex_get_state_name($sid = 3) {
   pdd_trace_funct();
@@ -77,3 +99,31 @@ function _remotex_get_state_name($sid = 3) {
 
   return "Response: $state_name";
 }
+
+
+/**
+ * XML-RPC error handling.
+ */
+function _remotex_error() {
+  pdd_trace_funct();
+
+  $state_name = xmlrpc('http://betty.userland.com/RPC2',
+    array('examples.getStateName' => array()));
+
+  if ($error = xmlrpc_error()) {
+    if ($error->code != 0) {
+      drupal_set_message(t('Could not get state name because the remote site gave
+        an error: %message (@code).', array(
+          '%message' => $error->message,
+          '@code' => $error->code,
+        )));
+    }
+  }
+
+  return "Response: $state_name";
+}
+
+
+/**
+ * XML-RPC Server
+ */

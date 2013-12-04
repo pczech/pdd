@@ -167,6 +167,7 @@ theme_get_setting
 url
 watchdog
 xmlrpc
+xmlrpc_error
 
 
 PHP
