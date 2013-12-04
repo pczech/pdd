@@ -63,6 +63,7 @@ hook_user_view
 hook_uninstall
 hook_validate
 hook_view
+hook_xmlrpc
 
 
 Form API

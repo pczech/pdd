@@ -127,3 +127,55 @@ function _remotex_error() {
 /**
  * XML-RPC Server
  */
+
+
+/**
+ * Implements hook_xmlrpc().
+ *
+ * Maps external names of XML-RPC methods to PHP callback functions.
+ */
+function remotex_xmlrpc() {
+  pdd_trace_funct();
+
+  // Each array element is either a pair of method => function or an array
+  // with four entries.
+  $methods = array();
+
+  // Simple form 'method' => 'function'.
+  $methods['remotex.hi'] = 'xmls_remotex_hi';
+
+  // Advanced form.
+  $methods[] = array(
+    'remotex.hello',
+    'xmls_remotex_hello',
+    array('string', 'string'),
+    t('Greets XML-RPC clients by name.'),
+  );
+
+  return $methods;
+}
+
+/**
+ * XML-RPC Server method remotex.hi handler.
+ */
+function xmls_remotex_hi($name) {
+  if (!$name) {
+    return xmlrpc_error(1, t('I cannot greet you by name if you do not
+      provide one.'));
+  }
+
+  return t('Hi, @name!', array('@name' => $name));
+}
+
+
+/**
+ * XML-RPC Server method remotex.hello handler.
+ */
+function xmls_remotex_hello($name) {
+  if (!$name) {
+    return xmlrpc_error(2, t('I cannot greet you by name if you do not
+      provide one.'));
+  }
+
+  return t('Hello, @name!', array('@name' => $name));
+}
